@@ -1,6 +1,6 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { colors } from '../../../theme/colors';
+import { useTheme } from '../../../theme/ThemeProvider';
 
 type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -10,10 +10,10 @@ interface IconProps {
   color?: string;
 }
 
-export function Icon({
-  name,
-  size = 24,
-  color = colors.neutral[500],
-}: IconProps) {
-  return <Ionicons name={name} size={size} color={color} />;
+export function Icon({ name, size = 24, color }: IconProps) {
+  const { theme } = useTheme();
+
+  const iconColor = color ?? theme.colors.text.tertiary;
+
+  return <Ionicons name={name} size={size} color={iconColor} />;
 }

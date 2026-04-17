@@ -12,4 +12,9 @@ export const typography = {
     semibold: '600' as const,
     bold: '700' as const,
   },
+  lineHeights: {
+    tight: 1.2,
+    normal: 1.5,
+    relaxed: 1.7,
+  },
 };
