@@ -2,7 +2,7 @@ import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../../theme/ThemeProvider';
 
-type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+export type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
 
 interface IconProps {
   name: IoniconsName;

@@ -1,10 +1,10 @@
 import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function HomePage() {
+export default function HistoryPage() {
   return (
     <SafeAreaView>
-      <Text>Página: Home</Text>
+      <Text>Página: History</Text>
     </SafeAreaView>
   );
 }

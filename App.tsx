@@ -1,10 +1,14 @@
 import { ThemeProvider } from './src/theme/ThemeProvider';
-import Home from './src/pages/Home';
+import { Navigation } from './src/navigation/index.routes';
+import { Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <Home />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <Navigation />
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
