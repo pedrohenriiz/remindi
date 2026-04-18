@@ -1,21 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { useTheme } from '../../theme/ThemeProvider';
 import { DoseStatus } from '../../types/doseStatusType';
 import { Icon } from '../Common/Icon';
 
 interface StatusBadgeProps {
   status: DoseStatus;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const statusIcons: Record<
   DoseStatus,
   React.ComponentProps<typeof Icon>['name']
 > = {
-  administered: 'checkmark-circle',
-  missed: 'close-circle-outline',
-  skipped: 'remove-circle-outline',
-  pending: 'time-outline',
+  administered: 'AlertCircle',
+  missed: 'AlertCircle',
+  skipped: 'AlertCircle',
+  pending: 'AlertCircle',
 };
 
 const statusLabels: Record<DoseStatus, string> = {
@@ -25,7 +26,7 @@ const statusLabels: Record<DoseStatus, string> = {
   pending: 'Pendente',
 };
 
-export function StatusBadge({ status }: StatusBadgeProps) {
+export function StatusBadge({ status, containerStyle }: StatusBadgeProps) {
   const { theme } = useTheme();
   const { colors, spacing, borderRadius, typography } = theme;
   const config = colors.status[status];
@@ -43,6 +44,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
           borderRadius: borderRadius.full,
           gap: spacing.xs,
         },
+        containerStyle,
       ]}
     >
       <Icon name={statusIcons[status]} size={12} color={config.icon} />

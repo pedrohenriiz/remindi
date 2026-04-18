@@ -7,13 +7,13 @@ import {
   TextInputProps,
 } from 'react-native';
 import { useTheme } from '../../../theme/ThemeProvider';
-import { Icon, IoniconsName } from '../Icon';
+import { Icon, IconName } from '../Icon';
 
 interface InputProps extends TextInputProps {
   label?: string;
   error?: string;
-  iconLeft?: IoniconsName;
-  iconRight?: IoniconsName;
+  iconLeft?: IconName;
+  iconRight?: IconName;
   onPressRight?: () => void;
 }
 
@@ -107,11 +107,7 @@ export function Input({
             gap: spacing.xs,
           }}
         >
-          <Icon
-            name='alert-circle-outline'
-            size={14}
-            color={colors.error[500]}
-          />
+          <Icon name='AlertCircle' size={14} color={colors.error[500]} />
           <Text
             style={{
               fontSize: typography.sizes.caption,

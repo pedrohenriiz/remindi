@@ -1,19 +1,67 @@
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../../../theme/ThemeProvider';
+import {
+  LucideIcon,
+  Pill,
+  Clock,
+  CheckCircle,
+  XCircle,
+  MinusCircle,
+  Trash2,
+  Plus,
+  Home,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  AlertCircle,
+  Pencil,
+  Search,
+  Bell,
+  User,
+  PillBottle,
+  Droplet,
+} from 'lucide-react-native';
 
-export type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+export const iconMap = {
+  Pill,
+  Clock,
+  CheckCircle,
+  XCircle,
+  MinusCircle,
+  Trash2,
+  Plus,
+  Home,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  AlertCircle,
+  Pencil,
+  Search,
+  Bell,
+  User,
+  PillBottle,
+  Droplet,
+} as const;
+
+export type IconName = keyof typeof iconMap;
 
 interface IconProps {
-  name: IoniconsName;
+  name: IconName;
   size?: number;
   color?: string;
+  strokeWidth?: number;
 }
 
-export function Icon({ name, size = 24, color }: IconProps) {
+export function Icon({ name, size = 24, color, strokeWidth = 1.5 }: IconProps) {
   const { theme } = useTheme();
 
-  const iconColor = color ?? theme.colors.text.tertiary;
+  const LucideIconComponent = iconMap[name] as LucideIcon;
 
-  return <Ionicons name={name} size={size} color={iconColor} />;
+  return (
+    <LucideIconComponent
+      size={size}
+      color={color ?? theme.colors.text.tertiary}
+      strokeWidth={strokeWidth}
+    />
+  );
 }

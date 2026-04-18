@@ -6,7 +6,7 @@ import {
   TouchableOpacityProps,
 } from 'react-native';
 import { useTheme } from '../../../theme/ThemeProvider';
-import { Icon, IoniconsName } from '../Icon';
+import { Icon, IconName } from '../Icon';
 
 type ButtonVariant = 'primary' | 'secondary' | 'text';
 type ButtonSize = 'sm' | 'md' | 'lg';
@@ -16,8 +16,8 @@ interface ButtonProps extends TouchableOpacityProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
-  iconLeft?: IoniconsName;
-  iconRight?: IoniconsName;
+  iconLeft?: IconName;
+  iconRight?: IconName;
   fullWidth?: boolean;
 }
 

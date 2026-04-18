@@ -32,23 +32,23 @@ export const lightTheme = {
     status: {
       administered: {
         background: colors.success[100],
-        text: colors.success[700],
+        text: colors.success[800],
         icon: colors.success[500],
       },
       pending: {
-        background: colors.primary[50],
+        background: colors.primary[100],
         text: colors.primary[600],
         icon: colors.primary[400],
       },
       missed: {
         background: colors.error[100],
-        text: colors.error[700],
+        text: colors.error[600],
         icon: colors.error[500],
       },
       skipped: {
-        background: colors.neutral[100],
-        text: colors.neutral[600],
-        icon: colors.neutral[400],
+        background: colors.error[100],
+        text: colors.error[600],
+        icon: colors.error[400],
       },
     },
     primary: colors.primary,

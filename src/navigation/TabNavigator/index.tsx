@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { MainTabParamList } from '../types';
 import HomePage from '../../pages/Home';
 import HistoryPage from '../../pages/History';
-import { Icon, IoniconsName } from '../../components/Common/Icon';
+import { Icon, IconName } from '../../components/Common/Icon';
 import { useTheme } from '../../theme/ThemeProvider';
 import { View } from 'react-native';
 
@@ -13,23 +13,23 @@ type TabRoute = {
   name: keyof MainTabParamList;
   label: string;
   component: React.ComponentType;
-  icon: IoniconsName;
-  iconFocused: IoniconsName;
+  icon: IconName;
+  iconFocused: IconName;
 };
 
 const tabs: TabRoute[] = [
   {
     name: 'Home',
     label: 'Início',
-    icon: 'home-outline',
-    iconFocused: 'home',
+    icon: 'AlertCircle',
+    iconFocused: 'AlertCircle',
     component: HomePage,
   },
   {
     name: 'History',
     label: 'Histórico',
-    icon: 'calendar-outline',
-    iconFocused: 'calendar',
+    icon: 'AlertCircle',
+    iconFocused: 'AlertCircle',
     component: HistoryPage,
   },
 ];
