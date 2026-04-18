@@ -105,7 +105,18 @@ export function Button({
       {...rest}
     >
       {loading ? (
-        <ActivityIndicator size='small' color={iconColors[variant]} />
+        <>
+          <ActivityIndicator size='small' color={iconColors[variant]} />
+          <Text
+            style={{
+              fontSize: fontSizes[size],
+              fontWeight: typography.weights.semibold,
+              color: labelColors[variant],
+            }}
+          >
+            {label}
+          </Text>
+        </>
       ) : (
         <>
           {iconLeft && (
