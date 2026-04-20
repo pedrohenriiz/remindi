@@ -4,6 +4,8 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacityProps,
+  StyleProp,
+  TextStyle,
 } from 'react-native';
 import { useTheme } from '../../../theme/ThemeProvider';
 import { Icon, IconName } from '../Icon';
@@ -13,6 +15,7 @@ type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends TouchableOpacityProps {
   label: string;
+  labelStyle?: StyleProp<TextStyle>;
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
@@ -23,6 +26,7 @@ interface ButtonProps extends TouchableOpacityProps {
 
 export function Button({
   label,
+  labelStyle,
   variant = 'primary',
   size = 'md',
   loading = false,
@@ -128,11 +132,14 @@ export function Button({
           )}
 
           <Text
-            style={{
-              fontSize: fontSizes[size],
-              fontWeight: typography.weights.semibold,
-              color: labelColors[variant],
-            }}
+            style={[
+              {
+                fontSize: fontSizes[size],
+                fontWeight: typography.weights.semibold,
+                color: labelColors[variant],
+              },
+              labelStyle,
+            ]}
           >
             {label}
           </Text>
