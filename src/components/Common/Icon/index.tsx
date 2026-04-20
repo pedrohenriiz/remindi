@@ -21,6 +21,8 @@ import {
   PillBottle,
   Droplet,
   Link,
+  Flower,
+  House,
 } from 'lucide-react-native';
 
 export const iconMap = {
@@ -43,6 +45,8 @@ export const iconMap = {
   PillBottle,
   Droplet,
   Link,
+  Flower,
+  House,
 } as const;
 
 export type IconName = keyof typeof iconMap;

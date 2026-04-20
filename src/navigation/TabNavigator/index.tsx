@@ -1,11 +1,12 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { View } from 'react-native';
 import type { MainTabParamList } from '../types';
 import HomePage from '../../pages/Home';
 import HistoryPage from '../../pages/History';
 import { Icon, IconName } from '../../components/Common/Icon';
 import { useTheme } from '../../theme/ThemeProvider';
-import { View } from 'react-native';
+import FABButton from './FAB';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -21,15 +22,15 @@ const tabs: TabRoute[] = [
   {
     name: 'Home',
     label: 'Início',
-    icon: 'AlertCircle',
-    iconFocused: 'AlertCircle',
+    icon: 'House',
+    iconFocused: 'House',
     component: HomePage,
   },
   {
     name: 'History',
     label: 'Histórico',
-    icon: 'AlertCircle',
-    iconFocused: 'AlertCircle',
+    icon: 'Calendar',
+    iconFocused: 'Calendar',
     component: HistoryPage,
   },
 ];
@@ -44,8 +45,6 @@ export default function TabNavigator() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.background.primary,
-          borderTopColor: colors.border.default,
-          borderTopWidth: 1,
           paddingBottom: spacing.sm,
           paddingTop: spacing.sm,
         },
@@ -58,25 +57,54 @@ export default function TabNavigator() {
         },
       }}
     >
-      {tabs.map((tab) => (
-        <Tab.Screen
-          key={tab.name}
-          name={tab.name}
-          component={tab.component}
-          options={{
-            tabBarLabel: tab.label,
-            tabBarIcon: ({ color, focused }) => (
-              <View>
-                <Icon
-                  name={focused ? tab.iconFocused : tab.icon}
-                  size={22}
-                  color={color}
-                />
-              </View>
-            ),
-          }}
-        />
-      ))}
+      <Tab.Screen
+        name='Home'
+        component={tabs[0].component}
+        options={{
+          tabBarLabel: tabs[0].label,
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={focused ? tabs[0].iconFocused : tabs[0].icon}
+              size={22}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name='AddButton'
+        component={HomePage}
+        options={{
+          tabBarLabel: () => null,
+          tabBarButton: () => (
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <FABButton />
+            </View>
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name='History'
+        component={tabs[1].component}
+        options={{
+          tabBarLabel: tabs[1].label,
+          tabBarIcon: ({ color, focused }) => (
+            <Icon
+              name={focused ? tabs[1].iconFocused : tabs[1].icon}
+              size={22}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
