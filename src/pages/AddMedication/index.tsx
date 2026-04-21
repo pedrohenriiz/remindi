@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { medicationSchema, MedicationFormData } from './validationSchema';
+import { RootStackParamList } from '../../navigation/types';
 import { Step1 } from './Form/Step1';
 import { Step2 } from './Form/Step2';
+import { medicationRepository } from '../../database/repositories/medicationRepository';
+import { doseRepository } from '../../database/repositories/doseRepository';
 
 export default function AddMedicationPage() {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [step, setStep] = useState(1);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const methods = useForm<MedicationFormData>({
     resolver: zodResolver(medicationSchema),
@@ -32,8 +39,25 @@ export default function AddMedicationPage() {
   }
 
   async function handleSubmit(data: MedicationFormData) {
-    console.log('form data', data);
-    // lógica de salvar virá aqui
+    if (isSaving) return;
+
+    setIsSaving(true);
+    setError(null);
+
+    const saveResult = await medicationRepository.save(data);
+
+    if (!saveResult.success) {
+      setError(saveResult.error);
+      setIsSaving(false);
+      return;
+    }
+
+    // Gera as doses do dia atual para o medicamento recém-cadastrado
+    const today = new Date().toISOString().split('T')[0];
+    await doseRepository.generateForMedication(saveResult.data, today);
+
+    navigation.goBack();
+    setIsSaving(false);
   }
 
   return (
@@ -44,6 +68,8 @@ export default function AddMedicationPage() {
         <Step2
           onBack={handlePreviousStep}
           onSubmit={methods.handleSubmit(handleSubmit)}
+          isSaving={isSaving}
+          error={error}
         />
       )}
     </FormProvider>

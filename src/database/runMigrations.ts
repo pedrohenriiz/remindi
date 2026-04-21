@@ -1,9 +1,10 @@
 import * as SQLite from 'expo-sqlite';
 import { up as migration1 } from './migrations/1_create_medication_tables';
+import { up as migration2 } from './migrations/2_create_dose_table';
 
 // Registre aqui cada nova migration na ordem correta.
 // Nunca remova ou reordene as existentes.
-const MIGRATIONS = [migration1];
+const MIGRATIONS = [migration1, migration2];
 
 export async function runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
   const result = await db.getFirstAsync<{ user_version: number }>(

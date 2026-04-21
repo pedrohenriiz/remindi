@@ -13,11 +13,18 @@ import { ManualSection } from './sections/ManualSection';
 import { IntervalSection } from './sections/IntervalSection';
 
 interface Step2Props {
+  isSaving?: boolean;
+  error?: string | null;
   onBack: () => void;
   onSubmit: () => void;
 }
 
-export function Step2({ onBack, onSubmit }: Step2Props) {
+export function Step2({
+  onBack,
+  onSubmit,
+  isSaving = false,
+  error = null,
+}: Step2Props) {
   const { theme } = useTheme();
   const { colors, spacing, typography } = theme;
 
@@ -122,8 +129,26 @@ export function Step2({ onBack, onSubmit }: Step2Props) {
         </View>
       </ScrollView>
 
-      <View style={{ padding: spacing.lg }}>
-        <Button label='Salvar' onPress={onSubmit} size='lg' fullWidth />
+      <View style={{ padding: spacing.lg, gap: spacing.sm }}>
+        {error && (
+          <Text
+            style={{
+              fontSize: typography.sizes.caption,
+              color: colors.error[500],
+              textAlign: 'center',
+            }}
+          >
+            {error}
+          </Text>
+        )}
+        <Button
+          label='Salvar'
+          onPress={onSubmit}
+          size='lg'
+          fullWidth
+          disabled={isSaving}
+          loading={isSaving}
+        />
       </View>
     </SafeAreaView>
   );

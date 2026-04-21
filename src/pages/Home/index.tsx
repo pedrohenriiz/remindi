@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme/ThemeProvider';
 import { MedicationCard } from '../../components/MedicationCard';
@@ -7,45 +7,22 @@ import { Header } from '../../components/Header';
 import ActiveCard from '../../components/ActiveMedicationCard';
 import MedicationTitle from './MedicationTitle';
 import DailyMedicationTitle from './DailyMedicationsTitle';
-
-const MOCK_ACTIVE = {
-  medicationName: 'Lisinopril',
-  medicationUnit: '10mg • 1 Comprimido',
-  medicationType: 'tablet' as const,
-  scheduledAt: new Date().toISOString(),
-};
-
-const MOCK_MEDICATIONS = [
-  {
-    id: '1',
-    medicationName: 'Vitamina D3',
-    medicationUnit: '2000 UI • 1 Cápsula',
-    medicationType: 'capsule' as const,
-    doseStatus: 'administered' as const,
-    scheduleAt: new Date(Date.now() - 3600000).toISOString(),
-    confirmedAt: new Date(Date.now() - 3540000).toISOString(),
-  },
-  {
-    id: '2',
-    medicationName: 'Atorvastatina',
-    medicationUnit: '20mg • 1 Comprimido',
-    medicationType: 'tablet' as const,
-    doseStatus: 'pending' as const,
-    scheduleAt: new Date(Date.now() + 7200000).toISOString(),
-  },
-  {
-    id: '3',
-    medicationName: 'Metformina',
-    medicationUnit: '500mg • 1 Comprimido',
-    medicationType: 'tablet' as const,
-    doseStatus: 'skipped' as const,
-    scheduleAt: new Date(Date.now() - 7200000).toISOString(),
-  },
-];
+import { useHomePage } from './hooks/useHomePage';
 
 export default function HomePage() {
   const { theme } = useTheme();
-  const { colors, spacing } = theme;
+  const { colors, spacing, typography } = theme;
+
+  const { nextDose, todayDoses, isLoading, error, handleTake, handleSkip } =
+    useHomePage();
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color={colors.primary[500]} />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView
@@ -60,30 +37,107 @@ export default function HomePage() {
       >
         <MedicationTitle />
 
-        <ActiveCard
-          medicationName={MOCK_ACTIVE.medicationName}
-          medicationUnit={MOCK_ACTIVE.medicationUnit}
-          medicationType={MOCK_ACTIVE.medicationType}
-          scheduledAt={MOCK_ACTIVE.scheduledAt}
-          onTake={() => {}}
-          onSkip={() => {}}
-        />
+        {error && (
+          <Text
+            style={{
+              fontSize: typography.sizes.caption,
+              color: colors.error[500],
+              textAlign: 'center',
+            }}
+          >
+            {error}
+          </Text>
+        )}
 
-        <View style={{ gap: spacing.sm }}>
-          <DailyMedicationTitle />
+        {/* Próxima dose */}
+        {nextDose ? (
+          <ActiveCard
+            medicationName={nextDose.medicationName}
+            medicationUnit={nextDose.medicationUnit}
+            medicationType={nextDose.medicationType as any}
+            scheduledAt={`${nextDose.scheduledDate}T${nextDose.scheduledTime}:00`}
+            onTake={() => handleTake(nextDose)}
+            onSkip={() => handleSkip(nextDose)}
+          />
+        ) : (
+          <View
+            style={{
+              backgroundColor: colors.success[50],
+              borderRadius: 16,
+              padding: spacing.lg,
+              alignItems: 'center',
+              gap: spacing.xs,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: typography.sizes.body,
+                fontWeight: typography.weights.bold,
+                color: colors.success[700],
+              }}
+            >
+              Tudo em dia!
+            </Text>
+            <Text
+              style={{
+                fontSize: typography.sizes.label,
+                color: colors.success[600],
+                textAlign: 'center',
+              }}
+            >
+              Nenhuma dose pendente para hoje.
+            </Text>
+          </View>
+        )}
 
-          {MOCK_MEDICATIONS.map((medication) => (
-            <MedicationCard
-              key={medication.id}
-              medicationName={medication.medicationName}
-              medicationUnit={medication.medicationUnit}
-              medicationType={medication.medicationType}
-              doseStatus={medication.doseStatus}
-              scheduleAt={medication.scheduleAt}
-              confirmedAt={medication.confirmedAt}
-            />
-          ))}
-        </View>
+        {/* Doses do dia */}
+        {todayDoses.length > 0 && (
+          <View style={{ gap: spacing.sm }}>
+            <DailyMedicationTitle />
+
+            {todayDoses.map((dose) => (
+              <MedicationCard
+                key={dose.id}
+                medicationName={dose.medicationName}
+                medicationUnit={dose.medicationUnit}
+                medicationType={dose.medicationType as any}
+                doseStatus={dose.status}
+                scheduleAt={`${dose.scheduledDate}T${dose.scheduledTime}:00`}
+                confirmedAt={dose.confirmedAt}
+              />
+            ))}
+          </View>
+        )}
+
+        {todayDoses.length === 0 && !isLoading && (
+          <View
+            style={{
+              padding: spacing.xl,
+              alignItems: 'center',
+              gap: spacing.sm,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: typography.sizes.body,
+                fontWeight: typography.weights.medium,
+                color: colors.text.secondary,
+                textAlign: 'center',
+              }}
+            >
+              Nenhum medicamento para hoje
+            </Text>
+            <Text
+              style={{
+                fontSize: typography.sizes.label,
+                color: colors.text.tertiary,
+                textAlign: 'center',
+              }}
+            >
+              Adicione um medicamento para começar
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
