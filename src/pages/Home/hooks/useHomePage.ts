@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import {
   Dose,
@@ -11,6 +11,7 @@ interface UseHomePageReturn {
   todayDoses: Dose[];
   isLoading: boolean;
   error: string | null;
+  loadData: () => Promise<void>;
   handleTake: (dose: Dose) => Promise<void>;
   handleSkip: (dose: Dose) => Promise<void>;
 }
@@ -86,6 +87,7 @@ export function useHomePage(): UseHomePageReturn {
     todayDoses,
     isLoading,
     error,
+    loadData,
     handleTake,
     handleSkip,
   };

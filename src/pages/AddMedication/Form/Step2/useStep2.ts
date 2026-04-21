@@ -19,12 +19,15 @@ export function useStep2() {
     name: 'schedules' as never,
   });
 
+  // Gera todos os horários do ciclo de 24h, incluindo os que passam da meia-noite.
+  // Esses horários são apenas para exibição — o banco filtra por data ao salvar.
   function generateSchedules(intervalHours: number, first: string) {
     const [hours, minutes] = first.split(':').map(Number);
     const generated: string[] = [];
+    const firstMinutes = hours * 60 + minutes;
 
     for (let i = 0; i < Math.floor(24 / intervalHours); i++) {
-      const totalMinutes = hours * 60 + minutes + i * intervalHours * 60;
+      const totalMinutes = firstMinutes + i * intervalHours * 60;
       const h = Math.floor(totalMinutes / 60) % 24;
       const m = totalMinutes % 60;
       generated.push(

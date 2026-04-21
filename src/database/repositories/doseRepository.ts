@@ -1,8 +1,8 @@
 import * as Crypto from 'expo-crypto';
+import * as SQLite from 'expo-sqlite';
+import { getDatabase } from '../index';
 import { Medication } from './medicationRepository';
-import { IDoseRepository } from './doseRepositoryInterface';
-import { fail, ok, Result } from '../../utils/result';
-import { getDatabase } from '..';
+import { Result, ok, fail } from '../../utils/result';
 
 export type DoseStatus = 'pending' | 'administered' | 'skipped' | 'missed';
 
@@ -16,6 +16,19 @@ export interface Dose {
   scheduledTime: string; // HH:MM
   status: DoseStatus;
   confirmedAt?: string;
+}
+
+interface IDoseRepository {
+  generateForMedication(
+    medication: Medication,
+    date: string,
+  ): Promise<Result<void>>;
+  findByDate(date: string): Promise<Result<Dose[]>>;
+  findNextPending(): Promise<Result<Dose | null>>;
+  updateStatus(id: string, status: DoseStatus): Promise<Result<Dose>>;
+  getMarkedDates(): Promise<
+    Result<Record<string, { status: 'complete' | 'partial' | 'missed' }>>
+  >;
 }
 
 // Verifica se uma data cai em um dos dias da semana do medicamento
@@ -57,6 +70,7 @@ class DoseRepository implements IDoseRepository {
 
       if (!isScheduledForDate(medication.weekDays, date)) return ok(undefined);
 
+      // Evita duplicar doses caso já existam para essa data
       const existing = await db.getAllAsync<{ id: string }>(
         'SELECT id FROM doses WHERE medication_id = ? AND scheduled_date = ?',
         [medication.id, date],
@@ -64,12 +78,28 @@ class DoseRepository implements IDoseRepository {
 
       if (existing.length > 0) return ok(undefined);
 
+      // Usa o firstDose do medicamento como âncora para determinar
+      // quais horários pertencem ao dia atual e quais viraram a meia-noite.
+      // Horários >= firstDose pertencem ao dia `date`.
+      // Horários < firstDose viraram a meia-noite e pertencem ao dia seguinte.
+      const firstTime = medication.firstDose ?? medication.schedules[0];
+      const now = new Date().toTimeString().slice(0, 5); // HH:MM
+      const nextDate = new Date(date + 'T12:00:00');
+      nextDate.setDate(nextDate.getDate() + 1);
+      const nextDateStr = nextDate.toISOString().split('T')[0];
+
       await db.withTransactionAsync(async () => {
         for (const time of medication.schedules) {
+          const isToday = time >= firstTime;
+          const targetDate = isToday ? date : nextDateStr;
+
+          // Ignora horários do dia atual que já passaram
+          if (isToday && time < now) continue;
+
           await db.runAsync(
             `INSERT INTO doses (id, medication_id, scheduled_date, scheduled_time, status)
              VALUES (?, ?, ?, ?, 'pending')`,
-            [this.generateId(), medication.id, date, time],
+            [this.generateId(), medication.id, targetDate, time],
           );
         }
       });
@@ -108,37 +138,48 @@ class DoseRepository implements IDoseRepository {
     }
   }
 
-  // Retorna a próxima dose pendente do dia atual
+  // Retorna a próxima dose pendente do dia atual.
+  // Prioriza doses futuras; se não houver, retorna a primeira pendente do dia
+  // (horário já passou mas ainda não foi tomada nem pulada).
   async findNextPending(): Promise<Result<Dose | null>> {
     try {
       const db = await getDatabase();
       const today = todayAsString();
-      const now = new Date().toTimeString().slice(0, 5);
+      const now = new Date().toTimeString().slice(0, 5); // HH:MM
 
-      const row = await db.getFirstAsync<Record<string, unknown>>(
-        `SELECT
-           d.id,
-           d.medication_id,
-           m.name  AS medication_name,
-           m.amount || ' • ' || m.unit AS medication_unit,
-           m.type  AS medication_type,
-           d.scheduled_date,
-           d.scheduled_time,
-           d.status,
-           d.confirmed_at
-         FROM doses d
-         JOIN medications m ON m.id = d.medication_id
-         WHERE d.scheduled_date = ?
-           AND d.status = 'pending'
-           AND d.scheduled_time >= ?
-         ORDER BY d.scheduled_time ASC
-         LIMIT 1`,
+      const baseQuery = `
+        SELECT
+          d.id,
+          d.medication_id,
+          m.name  AS medication_name,
+          m.amount || ' • ' || m.unit AS medication_unit,
+          m.type  AS medication_type,
+          d.scheduled_date,
+          d.scheduled_time,
+          d.status,
+          d.confirmed_at
+        FROM doses d
+        JOIN medications m ON m.id = d.medication_id
+        WHERE d.scheduled_date = ?
+          AND d.status = 'pending'
+      `;
+
+      const futureRow = await db.getFirstAsync<Record<string, unknown>>(
+        baseQuery +
+          ' AND d.scheduled_time >= ? ORDER BY d.scheduled_time ASC LIMIT 1',
         [today, now],
       );
 
-      if (!row) return ok(null);
+      if (futureRow) return ok(this.rowToDose(futureRow));
 
-      return ok(this.rowToDose(row));
+      const pastRow = await db.getFirstAsync<Record<string, unknown>>(
+        baseQuery + ' ORDER BY d.scheduled_time ASC LIMIT 1',
+        [today],
+      );
+
+      if (!pastRow) return ok(null);
+
+      return ok(this.rowToDose(pastRow));
     } catch (error) {
       return fail(error);
     }
@@ -180,6 +221,7 @@ class DoseRepository implements IDoseRepository {
     }
   }
 
+  // Retorna as datas com status para o calendário do histórico
   async getMarkedDates(): Promise<
     Result<Record<string, { status: 'complete' | 'partial' | 'missed' }>>
   > {
