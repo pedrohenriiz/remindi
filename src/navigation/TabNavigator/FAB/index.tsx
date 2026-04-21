@@ -11,7 +11,7 @@ export default function FABButton() {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('AddMedicationStep1')}
+      onPress={() => navigation.navigate('AddMedication')}
       activeOpacity={0.8}
       style={{
         top: -30,
