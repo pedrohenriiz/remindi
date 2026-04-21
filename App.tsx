@@ -4,19 +4,24 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from './src/theme/ThemeProvider';
 import { Navigation } from './src/navigation/index.routes';
 import { getDatabase } from './src/database';
+import { requestNotificationPermission } from './src/services/notificationService';
 
 export default function App() {
-  const [isDbReady, setIsDbReady] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    getDatabase()
-      .then(() => setIsDbReady(true))
-      .catch((error) =>
-        console.error('Erro ao inicializar banco de dados:', error),
-      );
+    async function initialize() {
+      await getDatabase();
+      await requestNotificationPermission();
+      setIsReady(true);
+    }
+
+    initialize().catch((error) =>
+      console.error('Erro ao inicializar o app:', error),
+    );
   }, []);
 
-  if (!isDbReady) {
+  if (!isReady) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator />

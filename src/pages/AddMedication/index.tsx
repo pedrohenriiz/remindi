@@ -3,11 +3,12 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { medicationSchema, MedicationFormData } from './validationSchema';
+import { medicationRepository } from '../../database/repositories/medicationRepository';
+import { doseRepository } from '../../database/repositories/doseRepository';
+import { scheduleNotificationsForDoses } from '../../services/notificationService';
 import { RootStackParamList } from '../../navigation/types';
 import { Step1 } from './Form/Step1';
 import { Step2 } from './Form/Step2';
-import { medicationRepository } from '../../database/repositories/medicationRepository';
-import { doseRepository } from '../../database/repositories/doseRepository';
 
 export default function AddMedicationPage() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -44,17 +45,26 @@ export default function AddMedicationPage() {
     setIsSaving(true);
     setError(null);
 
+    // Salva o medicamento
     const saveResult = await medicationRepository.save(data);
-
     if (!saveResult.success) {
       setError(saveResult.error);
       setIsSaving(false);
       return;
     }
 
-    // Gera as doses do dia atual para o medicamento recém-cadastrado
+    // Gera as doses do dia atual
     const today = new Date().toISOString().split('T')[0];
     await doseRepository.generateForMedication(saveResult.data, today);
+
+    // Busca as doses geradas e agenda as notificações
+    const dosesResult = await doseRepository.findByDate(today);
+    if (dosesResult.success) {
+      const newDoses = dosesResult.data.filter(
+        (d) => d.medicationId === saveResult.data.id,
+      );
+      await scheduleNotificationsForDoses(newDoses);
+    }
 
     navigation.goBack();
     setIsSaving(false);
