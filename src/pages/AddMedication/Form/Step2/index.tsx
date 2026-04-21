@@ -13,10 +13,10 @@ import { ManualSection } from './sections/ManualSection';
 import { IntervalSection } from './sections/IntervalSection';
 
 interface Step2Props {
-  isSaving?: boolean;
-  error?: string | null;
   onBack: () => void;
   onSubmit: () => void;
+  isSaving?: boolean;
+  error?: string | null;
 }
 
 export function Step2({
@@ -40,6 +40,7 @@ export function Step2({
     handleIntervalChange,
     handleFirstDoseChange,
     handleAddSchedule,
+    handleTimeChange,
   } = useStep2();
 
   return (
@@ -116,6 +117,7 @@ export function Step2({
               errors={errors}
               onAdd={handleAddSchedule}
               onRemove={remove}
+              onTimeChange={handleTimeChange}
             />
           ) : (
             <IntervalSection

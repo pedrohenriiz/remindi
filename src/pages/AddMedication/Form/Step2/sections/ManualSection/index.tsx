@@ -12,6 +12,7 @@ interface ManualSectionProps {
   errors: FieldErrors<MedicationFormData>;
   onAdd: () => void;
   onRemove: (index: number) => void;
+  onTimeChange: (index: number, time: string) => void;
 }
 
 export function ManualSection({
@@ -20,6 +21,7 @@ export function ManualSection({
   errors,
   onAdd,
   onRemove,
+  onTimeChange,
 }: ManualSectionProps) {
   const { theme } = useTheme();
   const { colors, spacing, typography } = theme;
@@ -31,6 +33,7 @@ export function ManualSection({
           key={field.id}
           time={schedules[index]}
           onDelete={fields.length > 1 ? () => onRemove(index) : undefined}
+          onTimeChange={(time) => onTimeChange(index, time)}
         />
       ))}
 

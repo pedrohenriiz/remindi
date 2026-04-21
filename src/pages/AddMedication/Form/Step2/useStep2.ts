@@ -49,6 +49,12 @@ export function useStep2() {
     append('08:00' as never);
   }
 
+  function handleTimeChange(index: number, time: string) {
+    const updated = [...schedules];
+    updated[index] = time;
+    setValue('schedules', updated);
+  }
+
   return {
     control,
     errors,
@@ -61,5 +67,6 @@ export function useStep2() {
     handleIntervalChange,
     handleFirstDoseChange,
     handleAddSchedule,
+    handleTimeChange,
   };
 }
