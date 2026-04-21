@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { Alert } from 'react-native';
 import { medicationSchema, MedicationFormData } from './validationSchema';
 import { medicationRepository } from '../../database/repositories/medicationRepository';
 import { doseRepository } from '../../database/repositories/doseRepository';
@@ -45,7 +46,6 @@ export default function AddMedicationPage() {
     setIsSaving(true);
     setError(null);
 
-    // Salva o medicamento
     const saveResult = await medicationRepository.save(data);
     if (!saveResult.success) {
       setError(saveResult.error);
@@ -53,20 +53,26 @@ export default function AddMedicationPage() {
       return;
     }
 
-    // Gera as doses do dia atual
     const today = new Date().toISOString().split('T')[0];
     await doseRepository.generateForMedication(saveResult.data, today);
 
-    // Busca as doses geradas e agenda as notificações
     const dosesResult = await doseRepository.findByDate(today);
-    if (dosesResult.success) {
-      const newDoses = dosesResult.data.filter(
-        (d) => d.medicationId === saveResult.data.id,
-      );
+    const newDoses = dosesResult.success
+      ? dosesResult.data.filter((d) => d.medicationId === saveResult.data.id)
+      : [];
+
+    if (newDoses.length > 0) {
       await scheduleNotificationsForDoses(newDoses);
+      navigation.goBack();
+    } else {
+      // Nenhuma dose gerada para hoje — avisa o usuário antes de voltar
+      Alert.alert(
+        'Medicamento salvo',
+        'Todos os horários de hoje já passaram. As doses aparecerão a partir de amanhã.',
+        [{ text: 'OK', onPress: () => navigation.goBack() }],
+      );
     }
 
-    navigation.goBack();
     setIsSaving(false);
   }
 
