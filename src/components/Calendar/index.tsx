@@ -115,7 +115,6 @@ export function Calendar({
         markingType='multi-dot'
         markedDates={formattedDates}
         onDayPress={(day: DateData) => onDayPress?.(day.dateString)}
-        maxDate={new Date().toISOString().split('T')[0]}
         renderHeader={(date: any) => (
           <View style={{ paddingVertical: 8 }}>
             <Text

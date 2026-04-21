@@ -5,6 +5,7 @@ import { ThemeProvider } from './src/theme/ThemeProvider';
 import { Navigation } from './src/navigation/index.routes';
 import { getDatabase } from './src/database';
 import { requestNotificationPermission } from './src/services/notificationService';
+import { runDailyJob } from './src/services/jobService';
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -13,6 +14,12 @@ export default function App() {
     async function initialize() {
       await getDatabase();
       await requestNotificationPermission();
+
+      // Roda o job em background sem bloquear a inicialização
+      runDailyJob().catch((error) =>
+        console.error('[Job] Erro ao rodar job diário:', error),
+      );
+
       setIsReady(true);
     }
 
