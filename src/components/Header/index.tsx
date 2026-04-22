@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../theme/ThemeProvider';
 import { Icon } from '../Common/Icon';
+import Logo from '../../assets/logo.png';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -62,9 +63,14 @@ export function Header({ showBackButton = false, title }: HeaderProps) {
               backgroundColor: colors.primary[100],
               alignItems: 'center',
               justifyContent: 'center',
+              overflow: 'hidden',
             }}
           >
-            <Icon name='Flower' size={20} color={colors.primary[500]} />
+            <Image
+              source={Logo}
+              style={{ width: 20, height: 20 }}
+              resizeMode='contain'
+            />
           </View>
           <Text
             style={{
