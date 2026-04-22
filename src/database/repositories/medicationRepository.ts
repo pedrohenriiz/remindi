@@ -17,6 +17,7 @@ export interface Medication {
   scheduleMode: ScheduleMode;
   interval?: number;
   firstDose?: string;
+  recurring: boolean;
   weekDays: number[];
   schedules: string[];
   createdAt: string;
@@ -39,6 +40,7 @@ class MedicationRepository implements IMedicationRepository {
       scheduleMode: row.schedule_mode as ScheduleMode,
       interval: row.interval != null ? Number(row.interval) : undefined,
       firstDose: row.first_dose as string | undefined,
+      recurring: row.recurring === 1,
       createdAt: row.created_at as string,
     };
   }
@@ -98,8 +100,8 @@ class MedicationRepository implements IMedicationRepository {
 
       await db.withTransactionAsync(async () => {
         await db.runAsync(
-          `INSERT INTO medications (id, name, amount, type, unit, schedule_mode, interval, first_dose, created_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO medications (id, name, amount, type, unit, schedule_mode, interval, first_dose, recurring, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             id,
             data.name,
@@ -109,6 +111,7 @@ class MedicationRepository implements IMedicationRepository {
             data.scheduleMode,
             data.interval ?? null,
             data.firstDose ?? null,
+            data.recurring ? 1 : 0,
             createdAt,
           ],
         );
@@ -126,6 +129,7 @@ class MedicationRepository implements IMedicationRepository {
         scheduleMode: data.scheduleMode as ScheduleMode,
         interval: data.interval,
         firstDose: data.firstDose,
+        recurring: data.recurring,
         createdAt,
       });
 
@@ -186,7 +190,7 @@ class MedicationRepository implements IMedicationRepository {
       await db.withTransactionAsync(async () => {
         await db.runAsync(
           `UPDATE medications
-           SET name = ?, amount = ?, type = ?, unit = ?, schedule_mode = ?, interval = ?, first_dose = ?
+           SET name = ?, amount = ?, type = ?, unit = ?, schedule_mode = ?, interval = ?, first_dose = ?, recurring = ?
            WHERE id = ?`,
           [
             data.name,
@@ -196,6 +200,7 @@ class MedicationRepository implements IMedicationRepository {
             data.scheduleMode,
             data.interval ?? null,
             data.firstDose ?? null,
+            data.recurring ? 1 : 0,
             id,
           ],
         );
