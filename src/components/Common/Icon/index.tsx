@@ -24,6 +24,8 @@ import {
   Flower,
   House,
   PlusCircle,
+  Check,
+  X,
 } from 'lucide-react-native';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -50,6 +52,8 @@ export const iconMap = {
   Flower,
   House,
   PlusCircle,
+  Check,
+  X,
 } as const;
 
 export type IconName = keyof typeof iconMap;

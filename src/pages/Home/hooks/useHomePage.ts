@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import {
-  doseRepository,
   Dose,
+  doseRepository,
   DoseStatus,
 } from '../../../database/repositories/doseRepository';
 
@@ -15,6 +15,13 @@ interface UseHomePageReturn {
   loadData: () => Promise<void>;
   handleTake: (dose: Dose) => void;
   handleSkip: (dose: Dose) => void;
+  handleEditStatus: (dose: Dose) => void;
+  bottomSheet: {
+    visible: boolean;
+    dose: Dose | null;
+    onSelect: (status: DoseStatus) => void;
+    onClose: () => void;
+  };
 }
 
 export function useHomePage(): UseHomePageReturn {
@@ -22,6 +29,7 @@ export function useHomePage(): UseHomePageReturn {
   const [todayDoses, setTodayDoses] = useState<Dose[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [bottomSheetDose, setBottomSheetDose] = useState<Dose | null>(null);
 
   async function loadData() {
     setIsLoading(true);
@@ -104,6 +112,21 @@ export function useHomePage(): UseHomePageReturn {
     );
   }
 
+  function handleEditStatus(dose: Dose) {
+    setBottomSheetDose(dose);
+  }
+
+  function handleBottomSheetSelect(status: DoseStatus) {
+    if (bottomSheetDose) {
+      updateDoseStatus(bottomSheetDose, status);
+    }
+    setBottomSheetDose(null);
+  }
+
+  function handleBottomSheetClose() {
+    setBottomSheetDose(null);
+  }
+
   return {
     nextDose,
     todayDoses,
@@ -112,5 +135,12 @@ export function useHomePage(): UseHomePageReturn {
     loadData,
     handleTake,
     handleSkip,
+    handleEditStatus,
+    bottomSheet: {
+      visible: bottomSheetDose !== null,
+      dose: bottomSheetDose,
+      onSelect: handleBottomSheetSelect,
+      onClose: handleBottomSheetClose,
+    },
   };
 }

@@ -14,6 +14,7 @@ interface MedicationCardProps {
   confirmedAt?: string;
   scheduleAt: string;
   onPress?: () => void;
+  onLongPress?: () => void;
 }
 
 const medicationTypeIcon: Record<MedicationType, IconName> = {
@@ -31,6 +32,7 @@ export function MedicationCard({
   medicationName,
   medicationUnit,
   onPress,
+  onLongPress,
 }: MedicationCardProps) {
   const { theme } = useTheme();
   const { colors, spacing, borderRadius, typography } = theme;
@@ -73,6 +75,8 @@ export function MedicationCard({
   return (
     <TouchableOpacity
       onPress={onPress}
+      onLongPress={onLongPress}
+      delayLongPress={400}
       activeOpacity={0.8}
       style={{
         flexDirection: 'row',

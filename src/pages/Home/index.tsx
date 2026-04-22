@@ -3,6 +3,7 @@ import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme/ThemeProvider';
 import { MedicationCard } from '../../components/MedicationCard';
+import { StatusBottomSheet } from '../../components/StatusBottomSheet';
 import { Header } from '../../components/Header';
 import ActiveCard from '../../components/ActiveMedicationCard';
 import MedicationTitle from './MedicationTitle';
@@ -13,8 +14,16 @@ export default function HomePage() {
   const { theme } = useTheme();
   const { colors, spacing, typography } = theme;
 
-  const { nextDose, todayDoses, isLoading, error, handleTake, handleSkip } =
-    useHomePage();
+  const {
+    nextDose,
+    todayDoses,
+    isLoading,
+    error,
+    handleTake,
+    handleSkip,
+    handleEditStatus,
+    bottomSheet,
+  } = useHomePage();
 
   if (isLoading) {
     return (
@@ -104,6 +113,7 @@ export default function HomePage() {
                 doseStatus={dose.status}
                 scheduleAt={`${dose.scheduledDate}T${dose.scheduledTime}:00`}
                 confirmedAt={dose.confirmedAt}
+                onLongPress={() => handleEditStatus(dose)}
               />
             ))}
           </View>
@@ -139,6 +149,19 @@ export default function HomePage() {
           </View>
         )}
       </ScrollView>
+
+      {/* Bottom sheet de edição de status */}
+      {bottomSheet.dose && (
+        <StatusBottomSheet
+          visible={bottomSheet.visible}
+          medicationName={bottomSheet.dose.medicationName}
+          medicationUnit={bottomSheet.dose.medicationUnit}
+          scheduledTime={bottomSheet.dose.scheduledTime}
+          currentStatus={bottomSheet.dose.status}
+          onSelect={bottomSheet.onSelect}
+          onClose={bottomSheet.onClose}
+        />
+      )}
     </SafeAreaView>
   );
 }
