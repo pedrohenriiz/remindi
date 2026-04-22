@@ -264,6 +264,28 @@ class DoseRepository implements IDoseRepository {
       return fail(error);
     }
   }
+
+  async markMissedDoses(): Promise<Result<number>> {
+    try {
+      const db = await getDatabase();
+
+      const today = new Date().toISOString().split('T')[0];
+      const now = new Date().toTimeString().slice(0, 5);
+
+      const result = await db.runAsync(
+        `UPDATE doses
+       SET status = 'missed'
+       WHERE status = 'pending'
+         AND scheduled_date = ?
+         AND scheduled_time < ?`,
+        [today, now],
+      );
+
+      return ok(result.changes);
+    } catch (error) {
+      return fail(error);
+    }
+  }
 }
 
 export const doseRepository = new DoseRepository();

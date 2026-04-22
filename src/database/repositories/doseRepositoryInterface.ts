@@ -13,4 +13,5 @@ export interface IDoseRepository {
   getMarkedDates(): Promise<
     Result<Record<string, { status: 'complete' | 'partial' | 'missed' }>>
   >;
+  markMissedDoses(): Promise<Result<number>>;
 }
