@@ -4,7 +4,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from './src/theme/ThemeProvider';
 import { Navigation } from './src/navigation/index.routes';
 import { getDatabase } from './src/database';
-import { requestNotificationPermission } from './src/services/notificationService';
+import {
+  requestNotificationPermission,
+  setUpNotificationChannel,
+} from './src/services/notificationService';
 import { runDailyJob } from './src/services/jobService';
 
 export default function App() {
@@ -13,6 +16,7 @@ export default function App() {
   useEffect(() => {
     async function initialize() {
       await getDatabase();
+      await setUpNotificationChannel();
       await requestNotificationPermission();
 
       // Roda o job em background sem bloquear a inicialização

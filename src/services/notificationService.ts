@@ -1,5 +1,8 @@
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 import { Dose } from '../database/repositories/doseRepository';
+
+const CHANNEL_ID = 'medication-reminders';
 
 // Configura como as notificações aparecem quando o app está em foreground
 Notifications.setNotificationHandler({
@@ -11,6 +14,20 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+// Cria o canal de notificação no Android (obrigatório para som no Android 8+)
+// Deve ser chamado uma vez na inicialização do app
+export async function setUpNotificationChannel(): Promise<void> {
+  if (Platform.OS !== 'android') return;
+
+  await Notifications.setNotificationChannelAsync(CHANNEL_ID, {
+    name: 'Lembretes de medicamentos',
+    importance: Notifications.AndroidImportance.HIGH,
+    sound: 'default',
+    vibrationPattern: [0, 250, 250, 250],
+    enableVibrate: true,
+  });
+}
 
 export async function requestNotificationPermission(): Promise<boolean> {
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
@@ -42,7 +59,9 @@ export async function scheduleDoseNotifications(dose: Dose): Promise<void> {
       content: {
         title: `${dose.medicationName} em 1 hora`,
         body: `${dose.medicationUnit} agendado para às ${dose.scheduledTime}`,
+        sound: 'default',
         data: { doseId: dose.id },
+        ...(Platform.OS === 'android' && { channelId: CHANNEL_ID }),
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DATE,
@@ -58,7 +77,9 @@ export async function scheduleDoseNotifications(dose: Dose): Promise<void> {
       content: {
         title: `Hora de tomar ${dose.medicationName}`,
         body: `${dose.medicationUnit}`,
+        sound: 'default',
         data: { doseId: dose.id },
+        ...(Platform.OS === 'android' && { channelId: CHANNEL_ID }),
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DATE,
