@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
+import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import {
-  Dose,
   doseRepository,
+  Dose,
+  DoseStatus,
 } from '../../../database/repositories/doseRepository';
-import { DoseStatus } from '../../../types/doseStatusType';
 
 interface UseHomePageReturn {
   nextDose: Dose | null;
@@ -12,8 +13,8 @@ interface UseHomePageReturn {
   isLoading: boolean;
   error: string | null;
   loadData: () => Promise<void>;
-  handleTake: (dose: Dose) => Promise<void>;
-  handleSkip: (dose: Dose) => Promise<void>;
+  handleTake: (dose: Dose) => void;
+  handleSkip: (dose: Dose) => void;
 }
 
 export function useHomePage(): UseHomePageReturn {
@@ -74,12 +75,33 @@ export function useHomePage(): UseHomePageReturn {
     }
   }
 
-  async function handleTake(dose: Dose) {
-    await updateDoseStatus(dose, 'administered');
+  function handleTake(dose: Dose) {
+    Alert.alert(
+      'Confirmar dose',
+      `Confirmar que tomou ${dose.medicationName} (${dose.medicationUnit})?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Confirmar',
+          onPress: () => updateDoseStatus(dose, 'administered'),
+        },
+      ],
+    );
   }
 
-  async function handleSkip(dose: Dose) {
-    await updateDoseStatus(dose, 'skipped');
+  function handleSkip(dose: Dose) {
+    Alert.alert(
+      'Pular dose',
+      `Tem certeza que quer pular ${dose.medicationName} das ${dose.scheduledTime}?`,
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Pular',
+          style: 'destructive',
+          onPress: () => updateDoseStatus(dose, 'skipped'),
+        },
+      ],
+    );
   }
 
   return {
