@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { MedicationFormData } from '../../validationSchema';
 
@@ -19,8 +20,7 @@ export function useStep2() {
     name: 'schedules' as never,
   });
 
-  // Gera todos os horários do ciclo de 24h, incluindo os que passam da meia-noite.
-  // Esses horários são apenas para exibição — o banco filtra por data ao salvar.
+  // Gera todos os horários do ciclo de 24h
   function generateSchedules(intervalHours: number, first: string) {
     const [hours, minutes] = first.split(':').map(Number);
     const generated: string[] = [];
@@ -37,6 +37,13 @@ export function useStep2() {
 
     setValue('schedules', generated);
   }
+
+  // Ao trocar para modo intervalo, gera os horários automaticamente
+  useEffect(() => {
+    if (scheduleMode === 'interval' && interval) {
+      generateSchedules(interval, firstDose);
+    }
+  }, [scheduleMode]);
 
   function handleIntervalChange(value: number) {
     setValue('interval', value);

@@ -5,7 +5,7 @@ export const medicationSchema = z.object({
   amount: z.string().min(1, 'Dosagem é obrigatória'),
   type: z.enum(['tablet', 'capsule', 'liquid', 'other']),
   unit: z.string(),
-  recurring: z.boolean().default(false),
+  recurring: z.boolean(),
   weekDays: z.array(z.number()).min(1, 'Selecione ao menos um dia'),
   scheduleMode: z.enum(['manual', 'interval']),
   schedules: z.array(z.string()).min(1, 'Adicione ao menos um horário'),
