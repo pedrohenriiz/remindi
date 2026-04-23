@@ -11,6 +11,7 @@ import {
 import { runDailyJob } from './src/services/jobService';
 
 import * as DevMenu from 'expo-dev-menu';
+import { ToastProvider } from './src/providers/ToastProvider';
 DevMenu.closeMenu();
 
 export default function App() {
@@ -45,9 +46,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+      <StatusBar barStyle='dark-content' />
       <ThemeProvider>
-        <StatusBar barStyle='dark-content' />
-        <Navigation />
+        <ToastProvider>
+          <Navigation />
+        </ToastProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

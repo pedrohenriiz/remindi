@@ -10,9 +10,11 @@ import { scheduleNotificationsForDoses } from '../../services/notificationServic
 import { RootStackParamList } from '../../navigation/types';
 import { Step1 } from './Form/Step1';
 import { Step2 } from './Form/Step2';
+import { useToast } from '../../providers/ToastProvider';
 
 export default function AddMedicationPage() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { show: showToast } = useToast();
   const [step, setStep] = useState(1);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,6 +31,7 @@ export default function AddMedicationPage() {
       schedules: ['08:00'],
       interval: 8,
       firstDose: '08:00',
+      recurring: false,
     },
   });
 
@@ -53,10 +56,13 @@ export default function AddMedicationPage() {
       return;
     }
 
-    const today = new Date().toISOString().split('T')[0];
-    await doseRepository.generateForMedication(saveResult.data, today);
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    const todayWeekDay = today.getDay();
 
-    const dosesResult = await doseRepository.findByDate(today);
+    await doseRepository.generateForMedication(saveResult.data, todayStr);
+
+    const dosesResult = await doseRepository.findByDate(todayStr);
     const newDoses = dosesResult.success
       ? dosesResult.data.filter((d) => d.medicationId === saveResult.data.id)
       : [];
@@ -64,13 +70,37 @@ export default function AddMedicationPage() {
     if (newDoses.length > 0) {
       await scheduleNotificationsForDoses(newDoses);
       navigation.goBack();
+      showToast({
+        message: `${data.name} adicionado com sucesso!`,
+        type: 'success',
+      });
     } else {
-      // Nenhuma dose gerada para hoje — avisa o usuário antes de voltar
-      Alert.alert(
-        'Medicamento salvo',
-        'Todos os horários de hoje já passaram. As doses aparecerão a partir de amanhã.',
-        [{ text: 'OK', onPress: () => navigation.goBack() }],
-      );
+      const todayWasSelected = data.weekDays.includes(todayWeekDay);
+
+      if (todayWasSelected) {
+        Alert.alert(
+          'Medicamento salvo',
+          'Todos os horários de hoje já passaram. As doses começarão na próxima data configurada.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+                showToast({
+                  message: `${data.name} adicionado com sucesso!`,
+                  type: 'success',
+                });
+              },
+            },
+          ],
+        );
+      } else {
+        navigation.goBack();
+        showToast({
+          message: `${data.name} adicionado com sucesso!`,
+          type: 'success',
+        });
+      }
     }
 
     setIsSaving(false);
