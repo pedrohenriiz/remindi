@@ -6,6 +6,7 @@ import {
   doseRepository,
   DoseStatus,
 } from '../../../database/repositories/doseRepository';
+import { cancelDoseNotifications } from '../../../services/notificationService';
 
 interface UseHomePageReturn {
   nextDose: Dose | null;
@@ -71,6 +72,11 @@ export function useHomePage(): UseHomePageReturn {
     if (!result.success) {
       setError(result.error);
       return;
+    }
+
+    // Cancela notificações pendentes quando a dose é resolvida
+    if (status !== 'pending') {
+      await cancelDoseNotifications(dose.id);
     }
 
     setTodayDoses((prev) =>

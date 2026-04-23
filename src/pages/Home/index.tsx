@@ -35,7 +35,7 @@ export default function HomePage() {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.white }}
+      style={{ flex: 1, backgroundColor: colors.background.primary }}
       edges={['top']}
     >
       <Header />

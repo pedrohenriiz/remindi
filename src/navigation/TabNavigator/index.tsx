@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { MainTabParamList } from '../types';
 import HomePage from '../../pages/Home';
 import HistoryPage from '../../pages/History';
@@ -38,6 +39,7 @@ const tabs: TabRoute[] = [
 export default function TabNavigator() {
   const { theme } = useTheme();
   const { colors, spacing, typography } = theme;
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -45,8 +47,9 @@ export default function TabNavigator() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: colors.background.primary,
-          paddingBottom: spacing.sm,
+          paddingBottom: insets.bottom + spacing.sm,
           paddingTop: spacing.sm,
+          height: 60 + insets.bottom,
         },
         tabBarActiveTintColor: colors.primary[500],
         tabBarInactiveTintColor: colors.text.tertiary,

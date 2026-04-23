@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from './src/theme/ThemeProvider';
 import { Navigation } from './src/navigation/index.routes';
@@ -43,6 +43,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
+        <StatusBar barStyle='dark-content' />
         <Navigation />
       </ThemeProvider>
     </SafeAreaProvider>
