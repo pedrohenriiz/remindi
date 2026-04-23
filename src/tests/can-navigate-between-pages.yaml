@@ -1,0 +1,12 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp:
+
+- assertVisible: "Medicamentos"
+
+- tapOn: "Histórico"
+- assertVisible: "Histórico"
+
+- tapOn: "Início"
+- assertVisible: "Medicamentos"

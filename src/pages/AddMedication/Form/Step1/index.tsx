@@ -112,6 +112,7 @@ export function Step1({ onNext }: Step1Props) {
               onChangeText={onChange}
               autoCapitalize='words'
               error={errors.name?.message}
+              testID='medication-name'
             />
           )}
         />
@@ -126,6 +127,7 @@ export function Step1({ onNext }: Step1Props) {
               value={value}
               onChangeText={onChange}
               error={errors.amount?.message}
+              testID='medication-dose'
             />
           )}
         />
@@ -176,6 +178,9 @@ export function Step1({ onNext }: Step1Props) {
                       ? colors.primary[50]
                       : colors.background.primary,
                   }}
+                  testID={`dose-type-${option.type}`}
+                  accessibilityLabel={`type-${option.type}`}
+                  accessibilityState={{ selected: isSelected }}
                 >
                   <View
                     style={{
@@ -221,7 +226,13 @@ export function Step1({ onNext }: Step1Props) {
           padding: spacing.lg,
         }}
       >
-        <Button label='Continuar' fullWidth onPress={handleNext} size='lg' />
+        <Button
+          label='Continuar'
+          fullWidth
+          onPress={handleNext}
+          size='lg'
+          testID='button-continue'
+        />
       </View>
     </SafeAreaView>
   );

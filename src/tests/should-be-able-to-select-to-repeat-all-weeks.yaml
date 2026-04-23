@@ -1,0 +1,41 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "medication-name"
+- inputText: "dipirona"
+
+- tapOn:
+    id: "medication-dose"
+- inputText: "100mg"
+- hideKeyboard
+
+- tapOn:
+    id: "button-continue"
+
+- assertVisible: "Quando tomar"
+
+# Marca o toggle como true 
+- tapOn:
+    id: "switch-recurring"
+
+- assertVisible:
+    id: "switch-recurring"
+    selected: true
+
+# Marca o toggle como false 
+- tapOn:
+    id: "switch-recurring"
+
+- assertVisible:
+    id: "switch-recurring"
+    selected: false

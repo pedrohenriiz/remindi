@@ -80,6 +80,7 @@ export function TimeSlotRow({
           onPress={() => setShowPicker(true)}
           activeOpacity={0.7}
           style={{ flex: 1, gap: 2 }}
+          testID='edit-manual-hour'
         >
           <Text
             style={{
@@ -113,6 +114,7 @@ export function TimeSlotRow({
               alignItems: 'center',
               justifyContent: 'center',
             }}
+            testID='button-delete-hour'
           >
             <Icon name='Trash2' size={16} color={colors.error[500]} />
           </TouchableOpacity>
@@ -127,6 +129,7 @@ export function TimeSlotRow({
           value={parseTimeToDate(time)}
           onChange={handlePickerChange}
           is24Hour
+          testID='timepicker'
         />
       )}
 

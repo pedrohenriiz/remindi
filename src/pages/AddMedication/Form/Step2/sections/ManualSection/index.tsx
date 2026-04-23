@@ -46,6 +46,7 @@ export function ManualSection({
           gap: spacing.xs,
           paddingVertical: spacing.sm,
         }}
+        testID='button-add-hour'
       >
         <Icon name='PlusCircle' size={18} color={colors.primary[500]} />
         <Text

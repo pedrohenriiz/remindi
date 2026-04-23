@@ -48,7 +48,7 @@ export function Step2({
       style={{ flex: 1, backgroundColor: colors.background.primary }}
       edges={['top', 'bottom']}
     >
-      <Header showBackButton />
+      <Header showBackButton handleBackButton={onBack} />
 
       <ScrollView
         contentContainerStyle={{ padding: spacing.lg, gap: spacing.lg }}
@@ -150,6 +150,7 @@ export function Step2({
           fullWidth
           disabled={isSaving}
           loading={isSaving}
+          testID='button-save'
         />
       </View>
     </SafeAreaView>

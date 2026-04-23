@@ -1,0 +1,15 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- tapOn:
+    id: "button-continue"
+
+- assertVisible: "Nome é obrigatório"
+- assertVisible: "Dosagem é obrigatória"

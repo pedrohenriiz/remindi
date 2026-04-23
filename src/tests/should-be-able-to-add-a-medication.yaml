@@ -1,0 +1,49 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "medication-name"
+- inputText: "dipirona"
+
+- tapOn:
+    id: "medication-dose"
+- inputText: "100mg"
+- hideKeyboard
+
+- tapOn:
+    id: "dose-type-capsule"
+
+- tapOn:
+    id: "button-continue"
+
+## Segunda parte do formulário
+
+- assertVisible: "Quando tomar"
+
+- tapOn:
+    id: "week-day-5"
+- tapOn:
+    id: "week-day-6"
+
+- tapOn:
+    id: "edit-manual-hour"
+- tapOn: "23"
+- tapOn: "55"
+- tapOn: "OK"
+
+- tapOn:
+    id: "button-save"
+
+- assertVisible: "Medicamentos do dia"
+
+- scrollUntiVisible:
+    element: "dipirona"

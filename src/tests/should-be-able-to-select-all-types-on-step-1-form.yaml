@@ -1,0 +1,57 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+# Clicou no tipo "cápsula"
+- tapOn:
+    id: "dose-type-capsule"
+
+- assertVisible:
+    id: "dose-type-capsule"
+    selected: true
+
+- assertVisible:
+    id: "dose-type-tablet"
+    selected: false
+
+# Clicou no tipo "comprimido"
+- tapOn:
+    id: "dose-type-tablet"
+
+- assertVisible:
+    id: "dose-type-tablet"
+    selected: true
+
+- assertVisible:
+    id: "dose-type-capsule"
+    selected: false
+
+# Clicou no tipo "líquido"
+- tapOn:
+    id: "dose-type-liquid"
+
+- assertVisible:
+    id: "dose-type-liquid"
+    selected: true
+
+- assertVisible:
+    id: "dose-type-tablet"
+    selected: false
+
+# Clicou no tipo "outro"
+- tapOn:
+    id: "dose-type-other"
+
+- assertVisible:
+    id: "dose-type-other"
+    selected: true
+
+- assertVisible:
+    id: "dose-type-liquid"
+    selected: false

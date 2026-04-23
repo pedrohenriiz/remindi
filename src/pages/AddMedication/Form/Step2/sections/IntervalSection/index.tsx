@@ -42,7 +42,6 @@ export function IntervalSection({
   const [showPicker, setShowPicker] = useState(false);
 
   function handlePickerChange(_event: DateTimePickerEvent, date?: Date) {
-    // No Android o picker fecha sozinho; no iOS mantemos aberto
     if (Platform.OS === 'android') {
       setShowPicker(false);
     }
@@ -50,10 +49,6 @@ export function IntervalSection({
     if (date) {
       onFirstDoseChange(formatDateToTime(date));
     }
-  }
-
-  function handleConfirmIOS() {
-    setShowPicker(false);
   }
 
   return (
@@ -95,6 +90,9 @@ export function IntervalSection({
                     ? colors.primary[500]
                     : colors.border.default,
                 }}
+                testID={`interval-${option}`}
+                accessibilityLabel={`interval-${option}`}
+                accessibilityState={{ selected: isSelected }}
               >
                 <Text
                   style={{
@@ -139,6 +137,7 @@ export function IntervalSection({
             borderColor: colors.border.default,
             alignSelf: 'flex-start',
           }}
+          testID='first-dose'
         >
           <Text
             style={{
@@ -185,9 +184,9 @@ export function IntervalSection({
           <View
             style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm }}
           >
-            {schedules.map((time) => (
+            {schedules.map((time, index) => (
               <View
-                key={time}
+                key={`${time}-${index}`}
                 style={{
                   paddingVertical: spacing.xs,
                   paddingHorizontal: spacing.md,
@@ -196,6 +195,7 @@ export function IntervalSection({
                   borderWidth: 1,
                   borderColor: colors.primary[200],
                 }}
+                testID={`time-index-${index}`}
               >
                 <Text
                   style={{

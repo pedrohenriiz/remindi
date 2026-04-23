@@ -1,0 +1,113 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "medication-name"
+- inputText: "dipirona"
+
+- tapOn:
+    id: "medication-dose"
+- inputText: "100mg"
+- hideKeyboard
+
+- tapOn:
+    id: "button-continue"
+
+# Desmarca todas as datas selecionadas
+
+- assertVisible: "Quando tomar"
+
+- tapOn:
+    id: "week-day-4"
+
+- assertVisible:
+    id: "week-day-4"
+    selected: false
+
+- tapOn:
+    id: "week-day-3"
+
+- assertVisible:
+    id: "week-day-3"
+    selected: false
+
+- tapOn:
+    id: "week-day-2"
+
+- assertVisible:
+    id: "week-day-2"
+    selected: false
+
+- tapOn:
+    id: "week-day-1"
+
+- assertVisible:
+    id: "week-day-1"
+    selected: false
+
+- tapOn:
+    id: "week-day-0"
+
+- assertVisible:
+    id: "week-day-0"
+    selected: false
+
+# Marca todas as datas selecionadas
+- tapOn:
+    id: "week-day-0"
+
+- assertVisible:
+    id: "week-day-0"
+    selected: true
+
+- tapOn:
+    id: "week-day-1"
+
+- assertVisible:
+    id: "week-day-1"
+    selected: true
+
+
+- tapOn:
+    id: "week-day-2"
+
+- assertVisible:
+    id: "week-day-2"
+    selected: true
+
+- tapOn:
+    id: "week-day-3"
+
+- assertVisible:
+    id: "week-day-3"
+    selected: true
+
+- tapOn:
+    id: "week-day-4"
+
+- assertVisible:
+    id: "week-day-4"
+    selected: true
+
+- tapOn:
+    id: "week-day-5"
+
+- assertVisible:
+    id: "week-day-5"
+    selected: true
+
+- tapOn:
+    id: "week-day-6"
+
+- assertVisible:
+    id: "week-day-6"
+    selected: true

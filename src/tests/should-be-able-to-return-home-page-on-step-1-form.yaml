@@ -1,0 +1,16 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "button-goback"
+
+- assertVisible: "Medicamentos"

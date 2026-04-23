@@ -1,0 +1,59 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "medication-name"
+- inputText: "dipirona"
+
+- tapOn:
+    id: "medication-dose"
+- inputText: "100mg"
+- hideKeyboard
+
+- tapOn:
+    id: "button-continue"
+
+- assertVisible: "Quando tomar"
+
+# Validar se o manual está selecionado
+
+- assertVisible:
+    id: "schedule-mode-manual"
+    selected: true
+
+- assertVisible:
+    id: "schedule-mode-interval"
+    selected: false
+
+# Trocar a seleção para o por intervalo
+- tapOn:
+    id: "schedule-mode-interval"
+
+- assertVisible:
+    id: "schedule-mode-manual"
+    selected: false
+
+- assertVisible:
+    id: "schedule-mode-interval"
+    selected: true
+
+# Trocar a seleção para o manual
+- tapOn:
+    id: "schedule-mode-manual"
+
+- assertVisible:
+    id: "schedule-mode-manual"
+    selected: true
+
+- assertVisible:
+    id: "schedule-mode-interval"
+    selected: false

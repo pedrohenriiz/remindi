@@ -1,0 +1,6 @@
+appId: "com.pedrohzzm.remindi"
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"

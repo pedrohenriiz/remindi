@@ -8,9 +8,14 @@ import Logo from '../../assets/logo.png';
 interface HeaderProps {
   showBackButton?: boolean;
   title?: string;
+  handleBackButton?: () => void;
 }
 
-export function Header({ showBackButton = false, title }: HeaderProps) {
+export function Header({
+  showBackButton = false,
+  title,
+  handleBackButton,
+}: HeaderProps) {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const { colors, spacing, borderRadius, typography } = theme;
@@ -28,13 +33,19 @@ export function Header({ showBackButton = false, title }: HeaderProps) {
     >
       {showBackButton ? (
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            if (handleBackButton) {
+              return handleBackButton();
+            }
+            return navigation.goBack();
+          }}
           activeOpacity={0.7}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             gap: spacing.xs,
           }}
+          testID='button-goback'
         >
           <Icon name='ChevronLeft' size={20} color={colors.primary[500]} />
           <Text

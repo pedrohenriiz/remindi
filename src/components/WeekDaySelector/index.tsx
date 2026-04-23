@@ -64,6 +64,9 @@ export function WeekDaySelector({
                 ? colors.primary[500]
                 : colors.primary[200],
             }}
+            testID={`week-day-${day.value}`}
+            accessibilityLabel={`week-day-${day.value}`}
+            accessibilityState={{ selected: isSelected }}
           >
             <Text
               style={{

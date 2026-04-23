@@ -1,0 +1,87 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "medication-name"
+- inputText: "dipirona"
+
+- tapOn:
+    id: "medication-dose"
+- inputText: "100mg"
+- hideKeyboard
+
+- tapOn:
+    id: "button-continue"
+
+# Seleciona o por intervalo
+
+- tapOn:
+    id: "schedule-mode-interval"
+
+- assertVisible:
+    id: "interval-8"
+    selected: true
+
+# Clicou no 4
+- tapOn:
+    id: "interval-4"
+
+- assertVisible:
+    id: "interval-4"
+    selected: true
+
+- assertVisible:
+    id: "time-index-5"
+
+# Clicou no 6
+- tapOn:
+    id: "interval-6"
+
+- assertVisible:
+    id: "interval-6"
+    selected: true
+
+- assertVisible:
+    id: "time-index-3"
+
+# Clicou no 8
+- tapOn:
+    id: "interval-8"
+
+- assertVisible:
+    id: "interval-8"
+    selected: true
+
+- assertVisible:
+    id: "time-index-2"
+
+# Clicou no 12
+- tapOn:
+    id: "interval-12"
+
+- assertVisible:
+    id: "interval-12"
+    selected: true
+
+- assertVisible:
+    id: "time-index-1"
+
+# Clicou no 24
+- tapOn:
+    id: "interval-24"
+
+- assertVisible:
+    id: "interval-24"
+    selected: true
+
+- assertVisible:
+    id: "time-index-0"

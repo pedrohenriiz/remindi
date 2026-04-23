@@ -92,6 +92,9 @@ export function WeekDaysSection({ control, errors }: WeekDaysSectionProps) {
               thumbColor={
                 value ? colors.primary[600] : colors.background.primary
               }
+              testID='switch-recurring'
+              accessibilityLabel={`switch-recurring`}
+              accessibilityState={{ selected: value }}
             />
           </View>
         )}

@@ -1,0 +1,35 @@
+appId: com.pedrohzzm.remindi
+
+---
+- launchApp
+
+- assertVisible: "Medicamentos"
+
+- tapOn:
+    id: "add-medication"
+
+- assertVisible: "Sobre o medicamento"
+
+- tapOn:
+    id: "medication-name"
+- inputText: "dipirona"
+
+- tapOn:
+    id: "medication-dose"
+- inputText: "100mg"
+- hideKeyboard
+
+- tapOn:
+    id: "button-continue"
+
+- tapOn:
+    id: "schedule-mode-interval"
+
+- tapOn:
+    id: "first-dose"
+
+- tapOn: "23"
+- tapOn: "55"
+- tapOn: "OK"
+
+- assertVisible: "23:55"

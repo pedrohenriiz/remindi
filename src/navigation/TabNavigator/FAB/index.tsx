@@ -27,6 +27,7 @@ export default function FABButton() {
         shadowOpacity: 0.2,
         shadowRadius: 4,
       }}
+      testID='add-medication'
     >
       <Icon name='Plus' size={28} color={colors.white} />
     </TouchableOpacity>

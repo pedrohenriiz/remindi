@@ -46,6 +46,9 @@ export function ScheduleModeToggle({
                 : colors.background.secondary,
               height: 82,
             }}
+            testID={`schedule-mode-${option.value}`}
+            accessibilityLabel={`schedule-mode-${option.value}`}
+            accessibilityState={{ selected: isActive }}
           >
             <Text
               style={{

@@ -10,6 +10,9 @@ import {
 } from './src/services/notificationService';
 import { runDailyJob } from './src/services/jobService';
 
+import * as DevMenu from 'expo-dev-menu';
+DevMenu.closeMenu();
+
 export default function App() {
   const [isReady, setIsReady] = useState(false);
 
