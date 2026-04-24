@@ -3,6 +3,7 @@ import * as SQLite from 'expo-sqlite';
 import { getDatabase } from '../index';
 import { Medication } from './medicationRepository';
 import { Result, ok, fail } from '../../utils/result';
+import { IDoseRepository } from './doseRepositoryInterface';
 
 export type DoseStatus = 'pending' | 'administered' | 'skipped' | 'missed';
 
@@ -16,19 +17,6 @@ export interface Dose {
   scheduledTime: string; // HH:MM
   status: DoseStatus;
   confirmedAt?: string;
-}
-
-interface IDoseRepository {
-  generateForMedication(
-    medication: Medication,
-    date: string,
-  ): Promise<Result<void>>;
-  findByDate(date: string): Promise<Result<Dose[]>>;
-  findNextPending(): Promise<Result<Dose | null>>;
-  updateStatus(id: string, status: DoseStatus): Promise<Result<Dose>>;
-  getMarkedDates(): Promise<
-    Result<Record<string, { status: 'complete' | 'partial' | 'missed' }>>
-  >;
 }
 
 // Verifica se uma data cai em um dos dias da semana do medicamento
