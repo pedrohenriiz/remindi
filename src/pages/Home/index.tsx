@@ -24,6 +24,7 @@ export default function HomePage() {
     handleEditStatus,
   } = useHomePage();
 
+  // TODO: Adicionar um componente de Skeleton
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

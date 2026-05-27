@@ -1,9 +1,7 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
 import { useTheme } from '../../theme/ThemeProvider';
-import { Icon } from '../Common/Icon';
-import Logo from '../../assets/logo.png';
+import BackButton from './BackButton';
+import Logo from './Logo';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -16,9 +14,8 @@ export function Header({
   title,
   handleBackButton,
 }: HeaderProps) {
-  const navigation = useNavigation();
   const { theme } = useTheme();
-  const { colors, spacing, borderRadius, typography } = theme;
+  const { colors, spacing } = theme;
 
   return (
     <View
@@ -32,67 +29,9 @@ export function Header({
       }}
     >
       {showBackButton ? (
-        <TouchableOpacity
-          onPress={() => {
-            if (handleBackButton) {
-              return handleBackButton();
-            }
-            return navigation.goBack();
-          }}
-          activeOpacity={0.7}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: spacing.xs,
-          }}
-          testID='button-goback'
-        >
-          <Icon name='ChevronLeft' size={20} color={colors.primary[500]} />
-          <Text
-            style={{
-              fontSize: typography.sizes.label,
-              fontWeight: typography.weights.medium,
-              color: colors.primary[500],
-            }}
-          >
-            {title ?? 'Voltar'}
-          </Text>
-        </TouchableOpacity>
+        <BackButton title={title} onBackButton={handleBackButton} />
       ) : (
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: spacing.sm,
-          }}
-        >
-          <View
-            style={{
-              width: 40,
-              height: 40,
-              borderRadius: borderRadius.full,
-              backgroundColor: colors.primary[100],
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden',
-            }}
-          >
-            <Image
-              source={Logo}
-              style={{ width: 20, height: 20 }}
-              resizeMode='contain'
-            />
-          </View>
-          <Text
-            style={{
-              fontSize: typography.sizes.title,
-              fontWeight: typography.weights.bold,
-              color: colors.primary[900],
-            }}
-          >
-            Remindi
-          </Text>
-        </View>
+        <Logo />
       )}
     </View>
   );
