@@ -1,4 +1,4 @@
-import { ActiveMedicationCard } from '../../../components/ActiveMedicationCardNew';
+import { ActiveMedicationCard } from '../../../components/ActiveMedicationCard';
 import { Button } from '../../../components/Common/Button';
 import { Icon, IconName } from '../../../components/Common/Icon';
 import { useTheme } from '../../../theme/ThemeProvider';
