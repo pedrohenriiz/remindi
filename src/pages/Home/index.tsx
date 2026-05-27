@@ -5,10 +5,10 @@ import { useTheme } from '../../theme/ThemeProvider';
 import { MedicationCard } from '../../components/MedicationCard';
 import { StatusBottomSheet } from '../../components/StatusBottomSheet';
 import { Header } from '../../components/Header';
-import ActiveCard from '../../components/ActiveMedicationCard';
 import MedicationTitle from './MedicationTitle';
 import DailyMedicationTitle from './DailyMedicationsTitle';
 import { useHomePage } from './hooks/useHomePage';
+import ActiveCard from './components/ActiveCard';
 
 export default function HomePage() {
   const { theme } = useTheme();
@@ -19,10 +19,10 @@ export default function HomePage() {
     todayDoses,
     isLoading,
     error,
+    bottomSheet,
     handleTake,
     handleSkip,
     handleEditStatus,
-    bottomSheet,
   } = useHomePage();
 
   if (isLoading) {
