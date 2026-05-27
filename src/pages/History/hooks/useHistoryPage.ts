@@ -5,13 +5,17 @@ import {
   Dose,
 } from '../../../database/repositories/doseRepository';
 
+type MarkedDateProps = {
+  status: 'complete' | 'partial' | 'missed';
+};
+
 interface UseHistoryPageReturn {
   selectedDate: string;
   doses: Dose[];
-  markedDates: Record<string, { status: 'complete' | 'partial' | 'missed' }>;
+  markedDates: Record<string, MarkedDateProps>;
   isLoading: boolean;
   error: string | null;
-  administeredCount: number;
+  administeredDoses: number;
   handleDayPress: (date: string) => void;
 }
 
@@ -21,7 +25,7 @@ export function useHistoryPage(): UseHistoryPageReturn {
   const [selectedDate, setSelectedDate] = useState(today);
   const [doses, setDoses] = useState<Dose[]>([]);
   const [markedDates, setMarkedDates] = useState<
-    Record<string, { status: 'complete' | 'partial' | 'missed' }>
+    Record<string, MarkedDateProps>
   >({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,8 +65,8 @@ export function useHistoryPage(): UseHistoryPageReturn {
     }, []),
   );
 
-  const administeredCount = doses.filter(
-    (d) => d.status === 'administered',
+  const administeredDoses = doses.filter(
+    (dose) => dose.status === 'administered',
   ).length;
 
   return {
@@ -71,7 +75,7 @@ export function useHistoryPage(): UseHistoryPageReturn {
     markedDates,
     isLoading,
     error,
-    administeredCount,
+    administeredDoses,
     handleDayPress,
   };
 }
