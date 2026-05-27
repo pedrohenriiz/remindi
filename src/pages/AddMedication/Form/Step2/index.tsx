@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -6,19 +5,20 @@ import { useTheme } from '../../../../theme/ThemeProvider';
 import { Header } from '../../../../components/Header';
 import { StepIndicator } from '../../../../components/StepIndicator';
 import { ScheduleModeToggle } from '../../../../components/ScheduleModeToggle';
-import { Button } from '../../../../components/Common/Button';
 import { useStep2 } from './useStep2';
 import { WeekDaysSection } from './sections/WeekDaysSection';
 import { ManualSection } from './sections/ManualSection';
 import { IntervalSection } from './sections/IntervalSection';
+import { Button } from '../../../../components/Common/Button';
 
 interface Step2Props {
-  onBack: () => void;
-  onSubmit: () => void;
   isSaving?: boolean;
   error?: string | null;
+  onBack: () => void;
+  onSubmit: () => void;
 }
 
+// @TODO: Refatorar
 export function Step2({
   onBack,
   onSubmit,
@@ -143,15 +143,17 @@ export function Step2({
             {error}
           </Text>
         )}
-        <Button
-          label='Salvar'
+
+        <Button.Root
           onPress={onSubmit}
-          size='lg'
-          fullWidth
+          testID='button-save'
           disabled={isSaving}
           loading={isSaving}
-          testID='button-save'
-        />
+          size='lg'
+        >
+          <Button.Spinner />
+          <Button.Label>Salvar</Button.Label>
+        </Button.Root>
       </View>
     </SafeAreaView>
   );

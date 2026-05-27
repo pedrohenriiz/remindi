@@ -25,7 +25,6 @@ export default function HeaderChip({
     {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 4,
     },
     style,
   ];

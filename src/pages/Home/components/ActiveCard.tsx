@@ -68,24 +68,24 @@ export default function ActiveCard({
       </ActiveMedicationCard.Container>
 
       <ActiveMedicationCard.ButtonContainer>
-        <Button
-          label='Tomar agora'
+        <Button.Root
           onPress={onTake}
+          size='lg'
           style={{ backgroundColor: colors.primary[600] }}
-          size='lg'
-        />
-        <Button
-          label='Pular'
+        >
+          <Button.Label>Tomar agora</Button.Label>
+        </Button.Root>
+
+        <Button.Root
           variant='primary'
-          style={{
-            backgroundColor: colors.primary[100],
-          }}
-          labelStyle={{
-            color: colors.primary[800],
-          }}
-          onPress={onSkip}
+          style={{ backgroundColor: colors.primary[100] }}
           size='lg'
-        />
+          onPress={onSkip}
+        >
+          <Button.Label style={{ color: colors.primary[800] }}>
+            Pular
+          </Button.Label>
+        </Button.Root>
       </ActiveMedicationCard.ButtonContainer>
     </ActiveMedicationCard.Root>
   );

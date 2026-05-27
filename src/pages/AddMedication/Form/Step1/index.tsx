@@ -9,9 +9,9 @@ import { MedicationFormData } from '../../validationSchema';
 import { Header } from '../../../../components/Header';
 import { StepIndicator } from '../../../../components/StepIndicator';
 import { Input } from '../../../../components/Common/Input';
-import { Button } from '../../../../components/Common/Button';
 import { Icon, IconName } from '../../../../components/Common/Icon';
 import { MedicationType } from '../../../../types/medicationType';
+import { Button } from '../../../../components/Common/Button';
 
 type MedicationTypeOption = {
   type: MedicationType;
@@ -37,6 +37,7 @@ interface Step1Props {
   onNext: () => void;
 }
 
+// @TODO: Refatorar essa página
 export function Step1({ onNext }: Step1Props) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { theme } = useTheme();
@@ -226,13 +227,14 @@ export function Step1({ onNext }: Step1Props) {
           padding: spacing.lg,
         }}
       >
-        <Button
-          label='Continuar'
-          fullWidth
-          onPress={handleNext}
+        <Button.Root
           size='lg'
+          onPress={handleNext}
           testID='button-continue'
-        />
+          fullWidth
+        >
+          <Button.Label>Continuar</Button.Label>
+        </Button.Root>
       </View>
     </SafeAreaView>
   );
