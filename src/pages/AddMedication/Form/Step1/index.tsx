@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useFormContext, Controller } from 'react-hook-form';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,10 +7,10 @@ import { RootStackParamList } from '../../../../navigation/types';
 import { MedicationFormData } from '../../validationSchema';
 import { Header } from '../../../../components/Header';
 import { StepIndicator } from '../../../../components/StepIndicator';
-import { Input } from '../../../../components/Common/Input';
 import { Icon, IconName } from '../../../../components/Common/Icon';
 import { MedicationType } from '../../../../types/medicationType';
 import { Button } from '../../../../components/Common/Button';
+import { Input } from '../../../../components/Common/Input';
 
 type MedicationTypeOption = {
   type: MedicationType;
@@ -106,15 +105,21 @@ export function Step1({ onNext }: Step1Props) {
           control={control}
           name='name'
           render={({ field: { onChange, value } }) => (
-            <Input
-              label='Nome do medicamento'
-              placeholder='Ex: Glicinato de Magnésio'
-              value={value}
-              onChangeText={onChange}
-              autoCapitalize='words'
-              error={errors.name?.message}
-              testID='medication-name'
-            />
+            <Input.Root>
+              <Input.Label>Nome do medicamento</Input.Label>
+
+              <Input.FormControl>
+                <Input.Input
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder='Ex: Glicinato de Magnésio'
+                  autoCapitalize='words'
+                  testID='medication-name'
+                />
+              </Input.FormControl>
+
+              <Input.Error error={errors.name?.message} />
+            </Input.Root>
           )}
         />
 
@@ -122,14 +127,21 @@ export function Step1({ onNext }: Step1Props) {
           control={control}
           name='amount'
           render={({ field: { onChange, value } }) => (
-            <Input
-              label='Dosagem'
-              placeholder='Ex: 500mg'
-              value={value}
-              onChangeText={onChange}
-              error={errors.amount?.message}
-              testID='medication-dose'
-            />
+            <Input.Root>
+              <Input.Label>Dosagem</Input.Label>
+
+              <Input.FormControl>
+                <Input.Input
+                  value={value}
+                  onChangeText={onChange}
+                  placeholder='Ex: 500mg'
+                  autoCapitalize='words'
+                  testID='medication-dose'
+                />
+              </Input.FormControl>
+
+              <Input.Error error={errors.amount?.message} />
+            </Input.Root>
           )}
         />
 
