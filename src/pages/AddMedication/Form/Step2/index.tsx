@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../../../theme/ThemeProvider';
 import { Header } from '../../../../components/Header';
 import { StepIndicator } from '../../../../components/StepIndicator';
-import { ScheduleModeToggle } from '../../../../components/ScheduleModeToggle';
+import { ScheduleModeToggle } from './components/ScheduleModeToggle';
 import { useStep2 } from './useStep2';
 import { WeekDaysSection } from './sections/WeekDaysSection';
 import { ManualSection } from './sections/ManualSection';
