@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
-import { Alert } from 'react-native';
+
 import { medicationSchema, MedicationFormData } from './validationSchema';
-import { medicationRepository } from '../../database/repositories/medicationRepository';
-import { doseRepository } from '../../database/repositories/doseRepository';
-import { scheduleNotificationsForDoses } from '../../services/notificationService';
-import { RootStackParamList } from '../../navigation/types';
+
 import { Step1 } from './Form/Step1';
 import { Step2 } from './Form/Step2';
-import { useToast } from '../../providers/ToastProvider';
+import { useSaveMedication } from './hooks/useSaveMedication';
+import { usePostSaveNavigation } from './hooks/useSaveNavigation';
 
 export default function AddMedicationPage() {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { show: showToast } = useToast();
   const [step, setStep] = useState(1);
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const { isSaving, error, handleSubmit: saveMedication } = useSaveMedication();
+  const { handlePostSave } = usePostSaveNavigation();
 
   const methods = useForm<MedicationFormData>({
     resolver: zodResolver(medicationSchema),
@@ -44,66 +40,8 @@ export default function AddMedicationPage() {
   }
 
   async function handleSubmit(data: MedicationFormData) {
-    if (isSaving) return;
-
-    setIsSaving(true);
-    setError(null);
-
-    const saveResult = await medicationRepository.save(data);
-    if (!saveResult.success) {
-      setError(saveResult.error);
-      setIsSaving(false);
-      return;
-    }
-
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0];
-    const todayWeekDay = today.getDay();
-
-    await doseRepository.generateForMedication(saveResult.data, todayStr);
-
-    const dosesResult = await doseRepository.findByDate(todayStr);
-    const newDoses = dosesResult.success
-      ? dosesResult.data.filter((d) => d.medicationId === saveResult.data.id)
-      : [];
-
-    if (newDoses.length > 0) {
-      await scheduleNotificationsForDoses(newDoses);
-      navigation.goBack();
-      showToast({
-        message: `${data.name} adicionado com sucesso!`,
-        type: 'success',
-      });
-    } else {
-      const todayWasSelected = data.weekDays.includes(todayWeekDay);
-
-      if (todayWasSelected) {
-        Alert.alert(
-          'Medicamento salvo',
-          'Todos os horários de hoje já passaram. As doses começarão na próxima data configurada.',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-                showToast({
-                  message: `${data.name} adicionado com sucesso!`,
-                  type: 'success',
-                });
-              },
-            },
-          ],
-        );
-      } else {
-        navigation.goBack();
-        showToast({
-          message: `${data.name} adicionado com sucesso!`,
-          type: 'success',
-        });
-      }
-    }
-
-    setIsSaving(false);
+    const result = await saveMedication(data);
+    if (result) handlePostSave(data.name, result);
   }
 
   return (
