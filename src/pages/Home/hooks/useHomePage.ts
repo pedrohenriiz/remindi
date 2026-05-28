@@ -19,7 +19,7 @@ interface UseHomePageReturn {
   handleEditStatus: (dose: Dose) => void;
   bottomSheet: {
     visible: boolean;
-    dose: Dose | null;
+    dose: Dose;
     onSelect: (status: DoseStatus) => void;
     onClose: () => void;
   };
@@ -144,7 +144,7 @@ export function useHomePage(): UseHomePageReturn {
     handleEditStatus,
     bottomSheet: {
       visible: bottomSheetDose !== null,
-      dose: bottomSheetDose,
+      dose: bottomSheetDose!,
       onSelect: handleBottomSheetSelect,
       onClose: handleBottomSheetClose,
     },
