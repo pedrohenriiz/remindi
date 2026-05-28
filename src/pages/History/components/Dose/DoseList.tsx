@@ -3,6 +3,7 @@ import { useTheme } from '../../../../theme/ThemeProvider';
 import DoseListHeader from './DoseListHeader';
 import { MedicationCard } from '../../../../components/MedicationCard';
 import { Dose } from '../../../../database/repositories/doseRepository';
+import HistoryMedicationCard from '../MedicationCard';
 
 interface DoseListProps {
   date: string;
@@ -30,7 +31,7 @@ export default function DoseList({
 
       <View style={{ gap: spacing.sm }}>
         {doses.map((dose) => (
-          <MedicationCard
+          <HistoryMedicationCard
             key={dose.id}
             medicationName={dose.medicationName}
             medicationUnit={dose.medicationUnit}

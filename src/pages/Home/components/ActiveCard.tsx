@@ -3,13 +3,7 @@ import { Button } from '../../../components/Common/Button';
 import { Icon, IconName } from '../../../components/Common/Icon';
 import { useTheme } from '../../../theme/ThemeProvider';
 import { MedicationType } from '../../../types/medicationType';
-
-const medicationTypeIcon: Record<MedicationType, IconName> = {
-  tablet: 'Pill',
-  capsule: 'PillBottle',
-  liquid: 'Droplet',
-  other: 'AlertCircle',
-};
+import { getMedicationTypeIcon } from '../../../utils/medicationUtilts';
 
 interface ActiveCardProps {
   scheduledAt: string;
@@ -36,6 +30,8 @@ export default function ActiveCard({
     minute: '2-digit',
   });
 
+  const iconName = getMedicationTypeIcon(medicationType);
+
   return (
     <ActiveMedicationCard.Root>
       <ActiveMedicationCard.Container>
@@ -59,11 +55,7 @@ export default function ActiveCard({
         </ActiveMedicationCard.Content>
 
         <ActiveMedicationCard.IconContainer>
-          <Icon
-            name={medicationTypeIcon[medicationType]}
-            size={26}
-            color={colors.primary[400]}
-          />
+          <Icon name={iconName} size={26} color={colors.primary[400]} />
         </ActiveMedicationCard.IconContainer>
       </ActiveMedicationCard.Container>
 

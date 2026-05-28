@@ -1,13 +1,13 @@
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme/ThemeProvider';
-import { MedicationCard } from '../../components/MedicationCard';
 import { StatusBottomSheet } from '../../components/StatusBottomSheet';
 import { Header } from '../../components/Header';
 import MedicationTitle from './MedicationTitle';
 import DailyMedicationTitle from './DailyMedicationsTitle';
 import { useHomePage } from './hooks/useHomePage';
 import ActiveCard from './components/ActiveCard';
+import HomeMedicationCard from './components/MedicationCard';
 
 export default function HomePage() {
   const { theme } = useTheme();
@@ -105,7 +105,18 @@ export default function HomePage() {
             <DailyMedicationTitle />
 
             {todayDoses.map((dose) => (
-              <MedicationCard
+              // <MedicationCard
+              //   key={dose.id}
+              //   medicationName={dose.medicationName}
+              //   medicationUnit={dose.medicationUnit}
+              //   medicationType={dose.medicationType as any}
+              //   doseStatus={dose.status}
+              //   scheduleAt={`${dose.scheduledDate}T${dose.scheduledTime}:00`}
+              //   confirmedAt={dose.confirmedAt}
+              //   onLongPress={() => handleEditStatus(dose)}
+              // />
+
+              <HomeMedicationCard
                 key={dose.id}
                 medicationName={dose.medicationName}
                 medicationUnit={dose.medicationUnit}
