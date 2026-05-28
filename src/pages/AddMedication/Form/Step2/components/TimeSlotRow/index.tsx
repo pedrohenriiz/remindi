@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
-import { useTheme } from '../../theme/ThemeProvider';
-import { Icon } from '../Common/Icon';
+import { useTheme } from '../../../../../../theme/ThemeProvider';
+import { Icon } from '../../../../../../components/Common/Icon';
 
 interface TimeSlotRowProps {
   time: string;

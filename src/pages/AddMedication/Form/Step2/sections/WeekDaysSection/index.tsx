@@ -3,7 +3,7 @@ import { View, Text, Switch } from 'react-native';
 import { Controller, Control, FieldErrors } from 'react-hook-form';
 import { useTheme } from '../../../../../../theme/ThemeProvider';
 import { MedicationFormData } from '../../../../validationSchema';
-import { WeekDaySelector } from '../../../../../../components/WeekDaySelector';
+import { WeekDaySelector } from '../../components/WeekDaySelector';
 
 interface WeekDaysSectionProps {
   control: Control<MedicationFormData>;

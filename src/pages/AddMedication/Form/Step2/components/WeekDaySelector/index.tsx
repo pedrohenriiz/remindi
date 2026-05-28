@@ -1,6 +1,5 @@
-import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useTheme } from '../../theme/ThemeProvider';
+import { useTheme } from '../../../../../../theme/ThemeProvider';
 
 const DAYS = [
   { label: 'D', value: 0 },

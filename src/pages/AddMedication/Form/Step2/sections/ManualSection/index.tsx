@@ -1,9 +1,8 @@
-import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { FieldArrayWithId, FieldErrors } from 'react-hook-form';
 import { MedicationFormData } from '../../../../validationSchema';
 import { useTheme } from '../../../../../../theme/ThemeProvider';
-import { TimeSlotRow } from '../../../../../../components/TimeSlotRow';
+import { TimeSlotRow } from '../../components/TimeSlotRow';
 import { Icon } from '../../../../../../components/Common/Icon';
 
 interface ManualSectionProps {
