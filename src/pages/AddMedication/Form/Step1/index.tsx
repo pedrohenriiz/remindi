@@ -146,17 +146,7 @@ export function Step1({ onNext }: Step1Props) {
         />
 
         <View style={{ gap: spacing.sm }}>
-          <Text
-            style={{
-              fontSize: typography.sizes.caption,
-              fontWeight: typography.weights.semibold,
-              color: colors.text.tertiary,
-              textTransform: 'uppercase',
-              letterSpacing: 0.6,
-            }}
-          >
-            Tipo
-          </Text>
+          <Input.Label>Tipo</Input.Label>
 
           <View
             style={{
