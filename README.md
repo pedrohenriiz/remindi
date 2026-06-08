@@ -8,26 +8,26 @@
 
 ---
 
-## 📱 Sobre o projeto
+## Sobre o projeto
 
 O Remindi é um aplicativo de lembretes de medicamentos que ajuda o usuário a gerenciar seus remédios do dia a dia. É possível cadastrar medicamentos, definir horários e dias da semana, e receber notificações locais como lembretes. O app mantém um histórico completo de doses — administradas, puladas ou omitidas — e registra o histórico de dosagens ao longo do tempo.
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
-- 💊 **Cadastro de medicamentos** — nome, tipo, dosagem e horários
-- 🔔 **Notificações locais** — lembretes automáticos nos horários agendados
-- 📅 **Ritmo semanal** — seleção de dias da semana específicos
-- ⏱ **Modo intervalo** — geração automática de horários por intervalo (ex: de 8 em 8 horas)
-- 📋 **Registro de doses** — marcar doses como administrada, pulada ou omitida
-- 📈 **Histórico de dosagens** — rastreamento de mudanças de dosagem ao longo do tempo
-- 🗓 **Tela de histórico** — calendário com aderência diária
-- 🌗 **Suporte a temas** — tema claro e escuro
+-  **Cadastro de medicamentos** — nome, tipo, dosagem e horários
+-  **Notificações locais** — lembretes automáticos nos horários agendados
+-  **Ritmo semanal** — seleção de dias da semana específicos
+-  **Modo intervalo** — geração automática de horários por intervalo (ex: de 8 em 8 horas)
+-  **Registro de doses** — marcar doses como administrada, pulada ou omitida
+-  **Histórico de dosagens** — rastreamento de mudanças de dosagem ao longo do tempo
+-  **Tela de histórico** — calendário com aderência diária
+-  **Suporte a temas** — tema claro e escuro
 
 ---
 
-## 🛠 Tecnologias
+## Tecnologias
 
 | Categoria     | Tecnologia                             |
 | ------------- | -------------------------------------- |
@@ -68,7 +68,7 @@ Escaneie o QR code com o app Expo Go para rodar no seu dispositivo.
 
 ---
 
-## 📐 Decisões de arquitetura
+## Decisões de arquitetura
 
 ### Event Storming
 
@@ -95,7 +95,7 @@ A dosagem é armazenada separadamente do medicamento para preservar o histórico
 
 ---
 
-## 📄 Licença
+## Licença
 
 MIT License — sinta-se à vontade para usar este projeto como referência.
 
