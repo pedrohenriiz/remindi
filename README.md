@@ -88,9 +88,12 @@ A dosagem é armazenada separadamente do medicamento para preservar o histórico
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
-> Em breve
+<img width="375" height="792" alt="2026-06-08_17h57_06" src="https://github.com/user-attachments/assets/1e9bb392-e322-4733-9c0f-a1909d252d3a" />
+
+<img width="375" height="792" alt="image" src="https://github.com/user-attachments/assets/537d2505-b528-480b-b0fb-529ad2db8178" />
+
 
 ---
 
