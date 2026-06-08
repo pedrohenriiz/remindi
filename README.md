@@ -73,10 +73,6 @@ Escaneie o QR code com o app Expo Go para rodar no seu dispositivo.
 
 O domínio foi modelado utilizando Event Storming. Acesse o link a seguir para verificar a documentação: ([Event Storming - Remindi - Notion](https://destiny-nation-8a6.notion.site/Event-Storming-Remindi-3447fc999ce8808ab0ddd92a678092ff?pvs=73))
 
-### Dosagem como entidade separada
-
-A dosagem é armazenada separadamente do medicamento para preservar o histórico. Quando o médico altera a dose, um novo registro de Dosagem é criado com uma `dataInicio`, mantendo todas as doses passadas vinculadas à dosagem que estava vigente naquele momento.
-
 ### Status da dose
 
 | Status         | Descrição                                 |
