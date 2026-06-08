@@ -61,8 +61,7 @@ npm install
 # Inicie o servidor de desenvolvimento
 npx expo start
 ```
-
-Adicione um nome para seu banco de dados no arquivo .env. Exemplo: "medications.db"
+Para testar localmente, copie o arquivo .env.example e renomeie para .env. Depois disso, preencha as variáveis de ambientes necessárias.
 
 Escaneie o QR code com o app Expo Go para rodar no seu dispositivo.
 
