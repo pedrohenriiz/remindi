@@ -24,7 +24,7 @@ export function Container({ children }: { children: React.ReactNode }) {
       {/* Drag handle */}
       <View
         style={{ alignItems: 'center', paddingTop: 10, paddingBottom: 12 }}
-        {...context?.panResponder.panHandlers}
+        {...context?.panResponder?.panHandlers}
       >
         <View
           style={{

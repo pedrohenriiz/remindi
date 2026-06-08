@@ -1,19 +1,7 @@
-import React, { createContext, useContext } from 'react';
+import React from 'react';
 import { Modal } from 'react-native';
 import { useSheetAnimation } from './hooks/useSheetAnimation';
-
-interface SheetContextValue {
-  onClose: () => void;
-  animateOut: (cb?: () => void) => void;
-}
-
-const SheetContext = createContext<SheetContextValue | null>(null);
-
-export function useSheetContext() {
-  const ctx = useContext(SheetContext);
-  if (!ctx) throw new Error('Must be used within StatusBottomSheet');
-  return ctx;
-}
+import { SheetContext } from './StatusBottomSheet.context';
 
 interface RootProps {
   visible: boolean;
@@ -22,18 +10,27 @@ interface RootProps {
 }
 
 export function Root({ visible, children, onClose }: RootProps) {
-  const { animateOut } = useSheetAnimation(visible);
+  const { animateOut, panResponder, sheetTranslateY, backdropOpacity } =
+    useSheetAnimation(visible);
 
   return (
-    <SheetContext.Provider value={{ onClose, animateOut }}>
-      <Modal
-        visible={visible}
-        transparent
-        animationType='none'
-        onRequestClose={onClose}
+    <Modal
+      visible={visible}
+      transparent
+      animationType='none'
+      onRequestClose={onClose}
+    >
+      <SheetContext.Provider
+        value={{
+          onClose,
+          animateOut,
+          sheetTranslateY,
+          backdropOpacity,
+          panResponder,
+        }}
       >
         {children}
-      </Modal>
-    </SheetContext.Provider>
+      </SheetContext.Provider>
+    </Modal>
   );
 }

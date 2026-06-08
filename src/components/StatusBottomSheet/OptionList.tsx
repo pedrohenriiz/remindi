@@ -80,12 +80,12 @@ export function OptionList({ currentStatus, onSelect }: OptionListProps) {
         return (
           <View key={option.status}>
             <TouchableOpacity
-              onPress={() =>
+              onPress={() => {
                 context?.animateOut(() => {
                   onSelect(option.status);
                   context?.onClose();
-                })
-              }
+                });
+              }}
               activeOpacity={0.7}
               style={{
                 flexDirection: 'row',
