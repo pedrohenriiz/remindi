@@ -36,6 +36,7 @@ O Remindi é um aplicativo de lembretes de medicamentos que ajuda o usuário a g
 | Formulários   | React Hook Form + Zod                  |
 | Notificações  | expo-notifications                     |
 | Ícones        | Lucide React Native                    |
+| Armazenamento | SQLite                                 |
 | Calendário    | react-native-calendars                 |
 
 ## Como rodar o projeto
