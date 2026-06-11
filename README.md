@@ -23,7 +23,6 @@ O Remindi é um aplicativo de lembretes de medicamentos que ajuda o usuário a g
 -  **Registro de doses** — marcar doses como administrada, pulada ou omitida
 -  **Histórico de dosagens** — rastreamento de mudanças de dosagem ao longo do tempo
 -  **Tela de histórico** — calendário com aderência diária
--  **Suporte a temas** — tema claro e escuro
 
 ---
 
